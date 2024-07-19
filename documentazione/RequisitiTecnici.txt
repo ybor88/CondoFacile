@@ -1,3 +1,3 @@
 #Installazione server mysql 
-#Installazione motore node.js - npm - angular
+#Installazione motore node.js - npm - nvm - angular
 #Installazione JDK Java

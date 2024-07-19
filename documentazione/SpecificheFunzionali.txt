@@ -22,3 +22,9 @@ BE : Spring
 sonar 
 coverage
 deploy
+chatgpt 
+
+- Step Tecnici                            Stato
+
+1)Inizializzazione progetto Angular       100%
+2)Customizzare pagina home                  0%
