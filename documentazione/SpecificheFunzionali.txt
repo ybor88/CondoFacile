@@ -1,0 +1,24 @@
+#################   CONDOFACILE
+
+- Applicazione per gestire un condiminio
+
+- Funzionalità
+Pagina di profilo per condomino
+sezione con la lista delle bollette pdf (pagate - non pagate - in scadenza)
+visualizzazione pdf della bolletta
+grafico con consumi a seconda delle bollette per mese istogramma
+chat di gruppo
+chat con condomino
+richiesta interventi amministratore
+proposte condomino con valutazione degli altri se supera il 50% approvata se no declinata in 10 giorni di proposta
+
+- Tecnologie
+
+DB : Mysql
+FE : Angular
+BE : Spring
+
+- Best Practice
+sonar 
+coverage
+deploy
