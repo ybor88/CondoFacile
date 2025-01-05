@@ -1,0 +1,46 @@
+Funzionalità Principali
+Gestione Residenti:
+
+Creazione, aggiornamento, visualizzazione e cancellazione di residenti (nome, appartamento, contatti, ruolo - es. proprietario/inquilino).
+Gestione Appartamenti:
+
+Registro degli appartamenti (numero, piano, superficie, stato - occupato/vuoto).
+Gestione Spese Condominiali:
+
+Inserimento e aggiornamento delle spese comuni (manutenzione, pulizia, utenze).
+Divisione delle spese tra i residenti in base a criteri configurabili (es. superficie appartamento).
+Report delle Spese:
+
+Visualizzazione di riepiloghi mensili/annuali delle spese condominiali e quote per appartamento.
+Gestione Assemblee Condominiali:
+
+Creazione e gestione degli eventi delle assemblee (data, ordine del giorno, partecipanti).
+Registrazione delle decisioni prese durante l'assemblea.
+Manutenzione Programmata:
+
+Gestione delle attività di manutenzione (ascensore, giardino, pulizia), con possibilità di impostare notifiche periodiche.
+Comunicazioni ai Residenti:
+
+Inviare comunicazioni (notifiche via e-mail o messaggi interni) per avvisi importanti, scadenze, ecc.
+Accesso Basato su Ruoli:
+
+Diversi livelli di accesso (es. amministratore, residente), con funzionalità personalizzate per ciascun ruolo.
+Storico delle Attività:
+
+Archivio delle attività svolte nel condominio (manutenzioni completate, spese registrate, assemblee passate).
+Dashboard Interattiva:
+
+Interfaccia frontend per visualizzare riepiloghi rapidi (es. saldo cassa condominiale, spese recenti, prossime attività).
+
+#TECNOLOGIE
+BE:spring boot
+FE:angular
+DB:postgres
+
+#COVERAGE 80% LINE
+#SENZA SONAR E ISSUE
+
+#TASK
+
+-download postgress db -> condoFacileDB
+-download angular
