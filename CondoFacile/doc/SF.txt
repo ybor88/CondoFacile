@@ -37,10 +37,24 @@ BE:spring boot
 FE:angular
 DB:postgres
 
-#COVERAGE 80% LINE
-#SENZA SONAR E ISSUE
+#COVERAGE 80% LINE  -> DA FARE
+#SENZA SONAR E ISSUE -> DA FARE
+#SINCRONIZZAZIONE GIT -> FATTO
+------------------------------------------------
+DATABASE 
+Password dell'utente amministratore "postgres".
+Porta di connessione (default: 5432).
+Nome del database iniziale (default: postgres).
 
 #TASK
 
--download postgress db -> condoFacileDB
--download angular
+
+
+
+
+1)Gestione Residenti:
+
+Creazione
+aggiornamento
+visualizzazione
+cancellazione di residenti (nome, appartamento, contatti, ruolo - es. proprietario/inquilino).

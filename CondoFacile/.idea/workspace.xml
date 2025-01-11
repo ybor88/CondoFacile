@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="430d3b4d-0453-4708-a217-684f90481f4e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/condoFacile/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/0/e/0e610795a2d0b50c691ece7f5e9fe72dbbaad928" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/2/1/215c3961d790d9995922900ead0b7914071dcaa7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/2/5/252dac58f9406aa15793f71594c5cf6e949ecd4d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/2/6/26312422b873839fa1b12120307f9f67f7d91ac9" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/2/f/2f3cae48fc1183fbbd2ad84ebef4a2b365fc4d16" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/3/0/307e94a97bbc092cfe3103625149b3bd761237fa" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/4/4/442292b8a7efeabbe4cc176709b833b1792140ec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/6/f/6fda8b030b9f96b601372d7fe9c2dc4daf386d09" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/b/b/bbb686e935ab1ae21e577041a764b4a697c561ed" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/c/3/c3cde504400ea5e794404434bdbd7a37570051bd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/c/d/cd4d6c482b9fda7e8089a7896212aab7ce2d47e1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/e/6/e67aa011d4a666f1c888f628e33bc7199b9ab5d7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/e/f/ef8041f5a84a2410dff66fdfb092a0dc60a708ce" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/e/f/efa65eb77d463e1f17102791d4b16357a0be156c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/f/7/f740cd77d946fea2a72c14962c94f6082567caad" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/issuestore/index.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/0/e/0e610795a2d0b50c691ece7f5e9fe72dbbaad928" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/2/1/215c3961d790d9995922900ead0b7914071dcaa7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/2/5/252dac58f9406aa15793f71594c5cf6e949ecd4d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/2/6/26312422b873839fa1b12120307f9f67f7d91ac9" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/2/f/2f3cae48fc1183fbbd2ad84ebef4a2b365fc4d16" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/3/0/307e94a97bbc092cfe3103625149b3bd761237fa" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/4/4/442292b8a7efeabbe4cc176709b833b1792140ec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/6/f/6fda8b030b9f96b601372d7fe9c2dc4daf386d09" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/b/b/bbb686e935ab1ae21e577041a764b4a697c561ed" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/c/3/c3cde504400ea5e794404434bdbd7a37570051bd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/c/d/cd4d6c482b9fda7e8089a7896212aab7ce2d47e1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/e/6/e67aa011d4a666f1c888f628e33bc7199b9ab5d7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/e/f/ef8041f5a84a2410dff66fdfb092a0dc60a708ce" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/e/f/efa65eb77d463e1f17102791d4b16357a0be156c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/f/7/f740cd77d946fea2a72c14962c94f6082567caad" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/CondoFacileApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/controller/AppartamentoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/controller/ResidenteController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/controller/SpesaController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/entity/Appartamento.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/entity/Residente.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/entity/Spesa.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/repository/AppartamentoRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/repository/ResidenteRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/repository/SpesaRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/service/AppartamentoService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/service/ResidenteService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/java/com/condofacile/service/SpesaService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/resources/META-INF/maven/archetype.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/resources/archetype-resources/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/resources/archetype-resources/src/main/java/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/condoFacile/src/main/resources/archetype-resources/src/test/java/AppTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/SF.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc/SF.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2rUTdQmYVfDK57DqtjQ0b9uURwa" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Applicazioni/CondoFacile/CondoFacile/be/condoFacile"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="430d3b4d-0453-4708-a217-684f90481f4e" name="Changes" comment="" />
+      <created>1736612750973</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1736612750973</updated>
+    </task>
+    <servers />
+  </component>
+</project>
