@@ -24,7 +24,7 @@ public class ResidenteService {
         Residente residente = residenteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Residente not found"));
         residente.setNome(residenteDetails.getNome());
-        residente.setAppartamentoId(residenteDetails.getAppartamentoId());
+        residente.setAppartamento(residenteDetails.getAppartamento());
         residente.setContatti(residenteDetails.getContatti());
         residente.setRuolo(residenteDetails.getRuolo());
         return residenteRepository.save(residente);

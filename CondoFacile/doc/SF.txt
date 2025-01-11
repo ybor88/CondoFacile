@@ -40,17 +40,29 @@ DB:postgres
 #COVERAGE 80% LINE  -> DA FARE
 #SENZA SONAR E ISSUE -> DA FARE
 #SINCRONIZZAZIONE GIT -> FATTO
+#CASI DI TEST COLLAUDO -> DA FARE
+
 ------------------------------------------------
 DATABASE 
 Password dell'utente amministratore "postgres".
 Porta di connessione (default: 5432).
 Nome del database iniziale (default: postgres).
 
+utenti : 
+amministratore - hGf21!bv2211
+condomino - bhgw111mnh!o
+
+CREATE USER amministratore WITH PASSWORD 'hGf21!bv2211';
+CREATE USER condomino WITH PASSWORD 'bhgw111mnh!o';
+CREATE DATABASE condofacile;
+GRANT CONNECT ON DATABASE condofacile TO amministratore;
+GRANT CONNECT ON DATABASE condofacile TO condomino;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO amministratore;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO condomino;
+
 #TASK
 
-
-
-
+eliminazione utenze e mapping nella tabella delle utenze. 
 
 1)Gestione Residenti:
 
