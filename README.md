@@ -1,2 +1,0 @@
-# CondoFacile
-CondoFacile java application
