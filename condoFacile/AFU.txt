@@ -153,6 +153,8 @@ port : 3306
 user : root
 password : bhdg8JK98!
 
-FE : creare il modulo dell'app (be/fe) con springboot
+Start App 
+
+http://localhost:8080/Condofacile
 
 
