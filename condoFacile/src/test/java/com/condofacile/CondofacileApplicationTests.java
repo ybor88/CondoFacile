@@ -1,10 +1,10 @@
-package com.condofacile.condoFacileBE;
+package com.condofacile;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CondoFacileBeApplicationTests {
+class CondofacileApplicationTests {
 
 	@Test
 	void contextLoads() {

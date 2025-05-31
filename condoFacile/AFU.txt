@@ -5,18 +5,7 @@ documento di approvazione con tanto di firma di tutti. Altrimenti abolite con le
 Viene gestito il bilancio del condominio generale acqua corrente parco manutenzione. Ogni condomino ha il suo bilancio 
 mensile.
 
-Frontend (Angular)
-Framework: Angular 17+ (component-based, TypeScript)
 
-UI Kit:
-
-Angular Material (nativo Angular, supporto accessibilità, responsivo)
-Alternativa: PrimeNG (molti componenti pronti)
-Routing: Angular Router (integrato)
-State Management (se serve): NgRx o Akita (per app più complesse)
-HTTP Client: HttpClient di Angular (integrato per chiamate REST)
-
-Backend (Java)
 Framework: Spring Boot 3+ (rapido da avviare, robusto)
 Librerie chiave:
 Spring Web: per creare REST API
@@ -25,24 +14,10 @@ Spring Data JPA: per accesso a database
 Spring Validation: per validazione input
 
 Database:
-PostgreSQL (consigliato)
+Mysql
 ORM: Hibernate (via Spring Data JPA)
 Autenticazione: JWT (Spring Security + filtro custom) o OAuth2 (Google, GitHub)
 
-Install Angular CLI
-npm install -g @angular/cli
-
-Create a new project
-ng new condoFacileFE
-
-Go into project 
-cd condoFacileFE
-
-Start Project
-npm start
-
-Go Project Web
-http://localhost:4200/
 
 mysql -u root -p
 
@@ -178,7 +153,6 @@ port : 3306
 user : root
 password : bhdg8JK98!
 
-FE :
-adattare il logo allo sfondo del container
+FE : creare il modulo dell'app (be/fe) con springboot
 
 
