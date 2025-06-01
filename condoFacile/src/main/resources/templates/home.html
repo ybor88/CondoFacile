@@ -1,14 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="EN">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CondoFacile - Benvenuto</title>
+
+    <!-- Favicon (modifica il path se lo salvi in altra cartella) -->
+    <link rel="icon" type="image/png" href="/img/condofacileLogo.png">
+
+    <!-- CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="container">
-    <div class="logo">CondoFacile</div>
+
+    <!-- Logo immagine -->
+    <img src="/img/condofacileLogo.png" alt="Logo CondoFacile" style="width: 100px; margin-bottom: 1rem;">
+
+    <!-- Testo del logo -->
+    <div class="logo">Benvenuto in CondoFacile</div>
+
+    <!-- Pulsanti -->
     <button onclick="location.href='/login'">Accedi</button>
     <button onclick="location.href='/register'">Registrati</button>
 </div>
