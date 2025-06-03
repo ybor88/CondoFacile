@@ -190,4 +190,8 @@ CREATE TABLE utenti (
 
 ticket 
 -----------
-gestione id sempre incrementale(id corretto)
+1)non devo poter inserire tutti i piani ma solo quelli disponibile dal menu a tendina(non devono uscire occupati)
+(servizio be).
+2)migliorare il fe responsive iphone
+3)ogni messaggio di errore e di successo deve avere la pop up piu carica. 
+4)spring security api

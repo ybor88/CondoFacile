@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class UtenteServiceImpl implements UtenteService {
     @Autowired
     private UtenteRepository repository;
 
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private UtenteDTO toDTO(Utente u) {
         return UtenteDTO.builder()
@@ -38,11 +37,6 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     private Utente toEntity(UtenteDTO dto) {
-        String hashedPwd = null;
-        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
-            hashedPwd = passwordEncoder.encode(dto.getPassword());
-        }
-
         return Utente.builder()
                 .nome(dto.getNome())
                 .cognome(dto.getCognome())
@@ -50,7 +44,7 @@ public class UtenteServiceImpl implements UtenteService {
                 .ruolo(Ruolo.valueOf(dto.getRuolo()))
                 .appartamento(dto.getAppartamento())
                 .attivo(dto.getAttivo() != null ? dto.getAttivo() : true)
-                .passwordHash(hashedPwd != null ? hashedPwd : "HASH_PLACEHOLDER") // puoi gestire meglio
+                .passwordHash(dto.getPassword()) // puoi gestire meglio
                 .build();
     }
 
@@ -70,18 +64,20 @@ public class UtenteServiceImpl implements UtenteService {
         return repository.findById(id).map(this::toDTO).orElse(null);
     }
 
-    @Override
-    @Transactional
     public UtenteDTO create(UtenteDTO dto) {
-        log.info("Creazione nuovo utente: {}", dto.getEmail());
+        try {
+            // Ora la password è SHA-256 hash lato client (hex string)
+            String passwordFromClient = dto.getPassword();
+            log.info("Creazione nuovo utente: {}", dto.getEmail());
+            Integer nextId = findNextAvailableId();
+            Utente utente = toEntity(dto);
+            utente.setId(nextId);
+            Utente saved = repository.save(utente);
 
-        Integer nextId = findNextAvailableId();
-
-        Utente utente = toEntity(dto);
-        utente.setId(nextId);
-
-        Utente saved = repository.save(utente);
-        return toDTO(saved);
+            return toDTO(saved);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante la creazione utente: " + e.getMessage());
+        }
     }
 
     @Override
