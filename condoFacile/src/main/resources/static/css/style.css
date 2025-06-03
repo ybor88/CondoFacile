@@ -1,22 +1,21 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #ff0000; /* rosso puro e deciso */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background-color: #ff0000;
+    min-height: 100dvh;
+    /* RIMOSSO: display, justify-content, align-items */
 }
 
 .container {
     text-align: center;
     padding: 2rem 3rem;
+    margin: 5vh auto;
     border-radius: 20px;
-    background-color: #8b0000; /* rosso scuro per contrasto */
+    background-color: #8b0000;
     max-width: 420px;
     width: 90%;
     box-shadow: 0 8px 20px rgba(255, 0, 0, 0.7);
-    border: 2px solid #ff1a1a; /* bordo rosso acceso */
+    border: 2px solid #ff1a1a;
 }
 
 .logo {
@@ -58,28 +57,30 @@ button:active {
 }
 
 /* Modale */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.7);
-        }
+      .modal {
+          display: none;
+          position: fixed;
+          z-index: 999;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow-y: auto; /* scroll globale per il contenuto */
+          background-color: rgba(0, 0, 0, 0.7);
+          -webkit-overflow-scrolling: touch;
+      }
 
       .modal-content {
           background-color: #8b0000;
-          margin: 10% auto;
-          padding: 2rem 1.5rem; /* padding orizzontale */
+          margin: 5vh auto;
+          padding: 2rem 1.5rem;
           border: 2px solid #ff1a1a;
           width: 90%;
           max-width: 500px;
           border-radius: 20px;
           color: #fff0f0;
           box-sizing: border-box;
+          max-height: none; /* importante */
       }
 
      .modal-content input,
@@ -121,4 +122,15 @@ button:active {
 
         .submit-btn:hover {
             background-color: #ff4d4d;
+        }
+        @media (max-width: 400px) {
+          .modal-content {
+            padding: 1.2rem 1rem;
+            font-size: 0.95rem;
+          }
+
+          .submit-btn {
+            font-size: 1rem;
+            padding: 0.8rem 2rem;
+          }
         }
