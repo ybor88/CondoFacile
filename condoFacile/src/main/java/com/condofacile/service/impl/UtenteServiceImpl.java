@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -33,25 +33,37 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     private Utente toEntity(UtenteDTO dto) {
-        Utente hashPlaceholder = Utente.builder()
-                //.id(dto.getId()) // ID lo gestiamo manualmente alla creazione
+        //.id(dto.getId()) // ID lo gestiamo manualmente alla creazione
+        // Gestisci come vuoi
+        if (dto.getAttivo() != null) return Utente.builder()
                 .nome(dto.getNome())
                 .cognome(dto.getCognome())
                 .email(dto.getEmail())
                 .ruolo(Ruolo.valueOf(dto.getRuolo()))
                 .appartamento(dto.getAppartamento())
-                .attivo(dto.getAttivo() != null ? dto.getAttivo() : true)
-                .passwordHash("HASH_PLACEHOLDER") // Gestisci come vuoi
+                .attivo(dto.getAttivo())
+                .passwordHash("HASH_PLACEHOLDER")
                 .build();
-        return hashPlaceholder;
+        return Utente.builder()
+                .nome(dto.getNome())
+                .cognome(dto.getCognome())
+                .email(dto.getEmail())
+                .ruolo(Ruolo.valueOf(dto.getRuolo()))
+                .appartamento(dto.getAppartamento())
+                .attivo(true)
+                .passwordHash("HASH_PLACEHOLDER")
+                .build();
     }
 
     @Override
     public List<UtenteDTO> findAll() {
         log.info("Lettura di tutti gli utenti");
-        return repository.findAll().stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        List<UtenteDTO> list = new ArrayList<>();
+        for (Utente utente : repository.findAll()) {
+            UtenteDTO dto = toDTO(utente);
+            list.add(dto);
+        }
+        return list;
     }
 
     @Override
