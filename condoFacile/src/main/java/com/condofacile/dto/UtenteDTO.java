@@ -27,4 +27,17 @@ public class UtenteDTO {
     private String appartamento;
 
     private Boolean attivo;
+
+    @Size(min = 6, message = "La password deve essere di almeno 6 caratteri")
+    @Setter(AccessLevel.NONE) // password non è serializzata in output
+    private String password;
+
+    // Setter personalizzato per poter impostare password in input, ma non esporla in output
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

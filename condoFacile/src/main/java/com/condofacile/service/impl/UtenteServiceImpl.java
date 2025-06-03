@@ -8,6 +8,8 @@ import com.condofacile.service.UtenteService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ public class UtenteServiceImpl implements UtenteService {
     @Autowired
     private UtenteRepository repository;
 
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     private UtenteDTO toDTO(Utente u) {
         return UtenteDTO.builder()
                 .id(u.getId())
@@ -29,29 +33,24 @@ public class UtenteServiceImpl implements UtenteService {
                 .ruolo(u.getRuolo().name())
                 .appartamento(u.getAppartamento())
                 .attivo(u.getAttivo())
+                .password("Password non mostrata per motivi di sicurezza")
                 .build();
     }
 
     private Utente toEntity(UtenteDTO dto) {
-        //.id(dto.getId()) // ID lo gestiamo manualmente alla creazione
-        // Gestisci come vuoi
-        if (dto.getAttivo() != null) return Utente.builder()
-                .nome(dto.getNome())
-                .cognome(dto.getCognome())
-                .email(dto.getEmail())
-                .ruolo(Ruolo.valueOf(dto.getRuolo()))
-                .appartamento(dto.getAppartamento())
-                .attivo(dto.getAttivo())
-                .passwordHash("HASH_PLACEHOLDER")
-                .build();
+        String hashedPwd = null;
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            hashedPwd = passwordEncoder.encode(dto.getPassword());
+        }
+
         return Utente.builder()
                 .nome(dto.getNome())
                 .cognome(dto.getCognome())
                 .email(dto.getEmail())
                 .ruolo(Ruolo.valueOf(dto.getRuolo()))
                 .appartamento(dto.getAppartamento())
-                .attivo(true)
-                .passwordHash("HASH_PLACEHOLDER")
+                .attivo(dto.getAttivo() != null ? dto.getAttivo() : true)
+                .passwordHash(hashedPwd != null ? hashedPwd : "HASH_PLACEHOLDER") // puoi gestire meglio
                 .build();
     }
 
@@ -96,6 +95,12 @@ public class UtenteServiceImpl implements UtenteService {
             existing.setRuolo(Ruolo.valueOf(dto.getRuolo()));
             existing.setAppartamento(dto.getAppartamento());
             existing.setAttivo(dto.getAttivo());
+
+            // Se password presente e non vuota => aggiorna hash
+            if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+                existing.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+            }
+
             return toDTO(repository.save(existing));
         }).orElse(null);
     }
