@@ -159,8 +159,19 @@ http://localhost:9090/Condofacile
 
 ticket
 ---------------------
-pagina di login (username + password)
 
+ho questa struttura java
+api
+config
+controller
+dto
+entity
+error
+repository
+security
+service util
+
+devo implemntare questo crud 
 
 
 
