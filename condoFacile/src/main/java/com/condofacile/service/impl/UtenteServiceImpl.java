@@ -3,6 +3,8 @@ package com.condofacile.service.impl;
 import com.condofacile.dto.UtenteDTO;
 import com.condofacile.entity.Utente;
 import com.condofacile.entity.Utente.Ruolo;
+import com.condofacile.error.UserCreationException;
+import com.condofacile.repository.AppartamentoRepository;
 import com.condofacile.repository.UtenteRepository;
 import com.condofacile.service.UtenteService;
 import jakarta.transaction.Transactional;
@@ -20,6 +22,8 @@ public class UtenteServiceImpl implements UtenteService {
 
     @Autowired
     private UtenteRepository repository;
+    @Autowired
+    private AppartamentoRepository appartamentoRepository;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -37,14 +41,24 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     private Utente toEntity(UtenteDTO dto) {
+        // puoi gestire meglio
+        if (dto.getAttivo() != null) return Utente.builder()
+                .nome(dto.getNome())
+                .cognome(dto.getCognome())
+                .email(dto.getEmail())
+                .ruolo(Ruolo.valueOf(dto.getRuolo()))
+                .appartamento(dto.getAppartamento())
+                .attivo(dto.getAttivo())
+                .passwordHash(dto.getPassword())
+                .build();
         return Utente.builder()
                 .nome(dto.getNome())
                 .cognome(dto.getCognome())
                 .email(dto.getEmail())
                 .ruolo(Ruolo.valueOf(dto.getRuolo()))
                 .appartamento(dto.getAppartamento())
-                .attivo(dto.getAttivo() != null ? dto.getAttivo() : true)
-                .passwordHash(dto.getPassword()) // puoi gestire meglio
+                .attivo(true)
+                .passwordHash(dto.getPassword())
                 .build();
     }
 
@@ -66,17 +80,29 @@ public class UtenteServiceImpl implements UtenteService {
 
     public UtenteDTO create(UtenteDTO dto) {
         try {
-            // Ora la password è SHA-256 hash lato client (hex string)
-            String passwordFromClient = dto.getPassword();
+            // Password già hashata lato client
             log.info("Creazione nuovo utente: {}", dto.getEmail());
+
             Integer nextId = findNextAvailableId();
             Utente utente = toEntity(dto);
             utente.setId(nextId);
-            Utente saved = repository.save(utente);
 
+            // Aggiorna flag occupato sull'appartamento corrispondente
+            String codiceAppartamento = utente.getAppartamento();
+            if (codiceAppartamento != null && !codiceAppartamento.isEmpty()) {
+                int rowsUpdated = appartamentoRepository.setOccupatoTrueByCodice(codiceAppartamento);
+                if (rowsUpdated == 0) {
+                    log.warn("Appartamento con codice {} non trovato o già occupato", codiceAppartamento);
+                } else {
+                    log.info("Appartamento con codice {} aggiornato a occupato = true", codiceAppartamento);
+                }
+            }
+
+            Utente saved = repository.save(utente);
             return toDTO(saved);
+
         } catch (Exception e) {
-            throw new RuntimeException("Errore durante la creazione utente: " + e.getMessage());
+            throw new UserCreationException("Errore durante la creazione utente: " + e.getMessage(), e);
         }
     }
 

@@ -27,7 +27,7 @@ USE condofacile;
 
 -- UTENTI
 CREATE TABLE utenti (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     cognome VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE utenti (
 
 -- BOLLETTE
 CREATE TABLE bollette (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     utente_id INT NOT NULL,
     descrizione TEXT NOT NULL,
     importo DECIMAL(10, 2) NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE bollette (
 
 -- AVVISI
 CREATE TABLE avvisi (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     titolo VARCHAR(255) NOT NULL,
     messaggio TEXT NOT NULL,
     data_pubblicazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -63,7 +63,7 @@ CREATE TABLE avvisi (
 
 -- CHAT
 CREATE TABLE messaggi_chat (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     mittente_id INT NOT NULL,
     destinatario_id INT NOT NULL,
     messaggio TEXT NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE messaggi_chat (
 
 -- INIZIATIVE
 CREATE TABLE iniziative (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     proponente_id INT NOT NULL,
     titolo VARCHAR(255) NOT NULL,
     descrizione TEXT NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE iniziative (
 
 -- VOTI
 CREATE TABLE voti_iniziative (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     iniziativa_id INT NOT NULL,
     votante_id INT NOT NULL,
     voto BOOLEAN NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE voti_iniziative (
 
 -- FIRME
 CREATE TABLE firme (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     iniziativa_id INT NOT NULL,
     firmatario_id INT NOT NULL,
     tipo_firma ENUM('approvazione', 'rifiuto') NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE firme (
 
 -- DOCUMENTI
 CREATE TABLE documenti (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     titolo VARCHAR(255) NOT NULL,
     descrizione TEXT,
     file_url TEXT NOT NULL,
@@ -120,7 +120,7 @@ CREATE TABLE documenti (
 
 -- BILANCIO CONDOMINIALE
 CREATE TABLE bilancio_condominio (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     anno INT NOT NULL,
     mese INT,
     voce_spesa VARCHAR(255),
@@ -131,7 +131,7 @@ CREATE TABLE bilancio_condominio (
 
 -- BILANCIO PERSONALE
 CREATE TABLE bilancio_personale (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     utente_id INT NOT NULL,
     anno INT NOT NULL,
     mese INT NOT NULL,
@@ -140,6 +140,30 @@ CREATE TABLE bilancio_personale (
     positivo BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (utente_id) REFERENCES utenti(id) ON DELETE CASCADE
 );
+
+CREATE TABLE appartamenti (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    codice VARCHAR(50) NOT NULL,
+    occupato BOOLEAN NOT NULL
+);
+
+INSERT INTO appartamenti (codice, occupato) VALUES 
+('A1', FALSE),
+('A2', FALSE),
+('A3', FALSE),
+('A4', FALSE),
+('A5', FALSE),
+('A6', FALSE),
+('A7', FALSE),
+('A8', FALSE),
+('B1', FALSE),
+('B2', FALSE),
+('B3', FALSE),
+('B4', FALSE),
+('B5', FALSE),
+('B6', FALSE),
+('B7', FALSE),
+('B8', FALSE);
 
 SHOW TABLES;
 
@@ -157,41 +181,16 @@ Start App
 
 http://localhost:9090/Condofacile
 
-ticket
----------------------
-
-ho questa struttura java
-api
-config
-controller
-dto
-entity
-error
-repository
-security
-service util
-
-devo implemntare questo crud 
-
-
-
-
--- UTENTI
-CREATE TABLE utenti (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    cognome VARCHAR(100) NOT NULL,
-    email VARCHAR(150) UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    ruolo ENUM('condomino', 'amministratore') NOT NULL,
-    appartamento VARCHAR(10),
-    attivo BOOLEAN DEFAULT TRUE
-);
-
 ticket 
 -----------
-1)non devo poter inserire tutti i piani ma solo quelli disponibile dal menu a tendina(non devono uscire occupati)
+1)non devo poter inserire tutti i piani ma solo quelli disponibile dal menu a tendina(non devono uscire occupati)    x
 (servizio be).
+  -quando elimino devo mettere il piano nella appartamenti a false 
+  -quando aggiorno e cambio l'appartamento devo verificare se esiste , se è libero ed aggiornare l'appartamenti a true
+
+
 2)migliorare il fe responsive iphone
 3)ogni messaggio di errore e di successo deve avere la pop up piu carica. 
 4)spring security api
+
+
