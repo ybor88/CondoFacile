@@ -28,7 +28,7 @@ public class RestExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleUserCreation(UserCreationException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("error", "User creation failed");
+        response.put("error", "User creation failed: email già presente");
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
