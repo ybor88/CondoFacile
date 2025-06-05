@@ -3,10 +3,13 @@ package com.condofacile.service.impl;
 import com.condofacile.dto.UtenteDTO;
 import com.condofacile.entity.Utente;
 import com.condofacile.entity.Utente.Ruolo;
+import com.condofacile.error.EmailNotFoundException;
+import com.condofacile.error.PasswordIncorrectException;
 import com.condofacile.error.UserCreationException;
 import com.condofacile.repository.AppartamentoRepository;
 import com.condofacile.repository.UtenteRepository;
 import com.condofacile.service.UtenteService;
+import com.condofacile.util.PasswordUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -42,7 +46,7 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     private Utente toEntity(UtenteDTO dto) {
-        return Utente.builder()
+        Utente build = Utente.builder()
                 .nome(dto.getNome())
                 .cognome(dto.getCognome())
                 .email(dto.getEmail())
@@ -51,6 +55,7 @@ public class UtenteServiceImpl implements UtenteService {
                 .attivo(dto.getAttivo() != null ? dto.getAttivo() : true)
                 .passwordHash(dto.getPassword())
                 .build();
+        return build;
     }
 
     @Override
@@ -171,5 +176,22 @@ public class UtenteServiceImpl implements UtenteService {
 
         log.info("Eliminati {} utenti con ruolo 'condomino'", deletedCount);
         log.info("Eliminati {} appartamenti occupati", deletedAppartamentiCount);
+    }
+
+    @Override
+    public boolean validateLogin(String email, String password) {
+        Optional<Utente> utenteOpt = repository.findByEmail(email);
+        if (utenteOpt.isEmpty()) {
+            // Email non trovata
+            throw new EmailNotFoundException("Email non presente, devi registrarti");
+        }
+        Utente utente = utenteOpt.get();
+
+        if (!utente.getPasswordHash().equals(password)) {
+            // Password errata
+            throw new PasswordIncorrectException("Password errata");
+        }
+        // Credenziali corrette
+        return true;
     }
 }

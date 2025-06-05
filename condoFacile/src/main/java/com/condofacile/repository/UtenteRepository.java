@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface UtenteRepository extends JpaRepository<Utente, Integer> {
 
     @Query("SELECT u.appartamento FROM Utente u WHERE u.id = :id")
@@ -16,4 +18,6 @@ public interface UtenteRepository extends JpaRepository<Utente, Integer> {
     @Transactional
     @Query("DELETE FROM Utente u WHERE u.ruolo = 'condomino'")
     int deleteAllCondomini();
+
+    Optional<Utente> findByEmail(String email);  // metodo JPA standard
 }

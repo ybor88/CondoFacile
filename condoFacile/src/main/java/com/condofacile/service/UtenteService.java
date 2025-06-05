@@ -11,4 +11,5 @@ public interface UtenteService {
     UtenteDTO update(Integer id, UtenteDTO dto);
     void delete(Integer id);
     void deleteAllCondomini();
+    boolean validateLogin(String email, String password);
 }
