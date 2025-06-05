@@ -36,15 +36,8 @@ public class UtenteController {
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> getById(@PathVariable Integer id) {
         UtenteDTO utente = service.findById(id);
+
         Map<String, Object> response = new HashMap<>();
-
-        if (utente == null) {
-            response.put("status", HttpStatus.NOT_FOUND.value());
-            response.put("message", "Utente non trovato con id: " + id);
-            response.put("data", null);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-
         response.put("status", HttpStatus.OK.value());
         response.put("message", "Utente trovato");
         response.put("data", utente);
@@ -66,15 +59,8 @@ public class UtenteController {
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> update(@PathVariable Integer id, @RequestBody @Valid UtenteDTO dto) {
         UtenteDTO updated = service.update(id, dto);
+
         Map<String, Object> response = new HashMap<>();
-
-        if (updated == null) {
-            response.put("status", HttpStatus.NOT_FOUND.value());
-            response.put("message", "Utente non trovato con id: " + id);
-            response.put("data", null);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-
         response.put("status", HttpStatus.OK.value());
         response.put("message", "Utente aggiornato con successo");
         response.put("data", updated);
@@ -86,11 +72,10 @@ public class UtenteController {
         service.delete(id);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("status", HttpStatus.NO_CONTENT.value());
+        response.put("status", HttpStatus.OK.value());
         response.put("message", "Utente eliminato con successo");
         response.put("data", null);
 
-        // anche se 204 non ha body, con questa struttura ritorniamo 200 con messaggio
         return ResponseEntity.ok(response);
     }
 

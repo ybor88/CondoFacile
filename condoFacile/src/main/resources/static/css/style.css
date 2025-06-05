@@ -134,3 +134,15 @@ button:active {
             padding: 0.8rem 2rem;
           }
         }
+
+#messageModalContent.success {
+    background-color: #b35c00;     /* Arancione bruciato */
+    border-color: #ffaa00;         /* Oro caldo */
+    color: #fff8e1;                /* Testo chiaro su arancione */
+}
+
+#messageModalContent.error {
+    background-color: #8b0000;     /* Rosso scuro */
+    border-color: #ff1a1a;
+    color: #fff0f0;
+}

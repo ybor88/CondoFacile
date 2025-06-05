@@ -42,23 +42,13 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     private Utente toEntity(UtenteDTO dto) {
-        // puoi gestire meglio
-        if (dto.getAttivo() != null) return Utente.builder()
-                .nome(dto.getNome())
-                .cognome(dto.getCognome())
-                .email(dto.getEmail())
-                .ruolo(Ruolo.valueOf(dto.getRuolo()))
-                .appartamento(dto.getAppartamento())
-                .attivo(dto.getAttivo())
-                .passwordHash(dto.getPassword())
-                .build();
         return Utente.builder()
                 .nome(dto.getNome())
                 .cognome(dto.getCognome())
                 .email(dto.getEmail())
                 .ruolo(Ruolo.valueOf(dto.getRuolo()))
                 .appartamento(dto.getAppartamento())
-                .attivo(true)
+                .attivo(dto.getAttivo() != null ? dto.getAttivo() : true)
                 .passwordHash(dto.getPassword())
                 .build();
     }
@@ -76,19 +66,20 @@ public class UtenteServiceImpl implements UtenteService {
 
     @Override
     public UtenteDTO findById(Integer id) {
-        return repository.findById(id).map(this::toDTO).orElse(null);
+        return repository.findById(id)
+                .map(this::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Utente non trovato con ID: " + id));
     }
 
+    @Override
     public UtenteDTO create(UtenteDTO dto) {
         try {
-            // Password già hashata lato client
             log.info("Creazione nuovo utente: {}", dto.getEmail());
 
             Integer nextId = findNextAvailableId();
             Utente utente = toEntity(dto);
             utente.setId(nextId);
 
-            // Aggiorna flag occupato sull'appartamento corrispondente
             String codiceAppartamento = utente.getAppartamento();
             if (codiceAppartamento != null && !codiceAppartamento.isEmpty()) {
                 int rowsUpdated = appartamentoRepository.setOccupatoTrueByCodice(codiceAppartamento);
@@ -103,6 +94,7 @@ public class UtenteServiceImpl implements UtenteService {
             return toDTO(saved);
 
         } catch (Exception e) {
+            log.error("Errore durante la creazione dell'utente: {}", e.getMessage(), e);
             throw new UserCreationException("Errore durante la creazione utente: " + e.getMessage(), e);
         }
     }
@@ -119,13 +111,12 @@ public class UtenteServiceImpl implements UtenteService {
             existing.setAppartamento(dto.getAppartamento());
             existing.setAttivo(dto.getAttivo());
 
-            // Se password presente e non vuota => aggiorna hash
             if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
                 existing.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
             }
 
             return toDTO(repository.save(existing));
-        }).orElse(null);
+        }).orElseThrow(() -> new EntityNotFoundException("Utente non trovato con ID: " + id));
     }
 
     @Override
@@ -133,23 +124,16 @@ public class UtenteServiceImpl implements UtenteService {
     public void delete(Integer id) {
         log.warn("Richiesta eliminazione utente con ID {}", id);
 
-        // Verifica se l'utente esiste
         if (!repository.existsById(id)) {
             log.error("Utente con ID {} non trovato. Operazione annullata.", id);
             throw new EntityNotFoundException("Utente non trovato con ID: " + id);
         }
 
-        // Recupero codice appartamento prima di eliminare
         String codiceAppartamento = repository.getCodiceAppartamentoById(id);
-        if (codiceAppartamento == null) {
-            log.warn("Nessun codice appartamento associato all'utente con ID {}", id);
-        }
 
-        // Eliminazione utente
         repository.deleteById(id);
         log.info("Utente con ID {} eliminato correttamente", id);
 
-        // Aggiorna occupazione appartamento se esiste
         if (codiceAppartamento != null) {
             int updated = appartamentoRepository.setOccupatoFalseByCodice(codiceAppartamento);
             if (updated > 0) {
@@ -160,10 +144,6 @@ public class UtenteServiceImpl implements UtenteService {
         }
     }
 
-    /**
-     * Trova il più piccolo ID intero positivo disponibile non usato
-     * nella tabella utenti.
-     */
     private Integer findNextAvailableId() {
         List<Integer> ids = repository.findAll().stream()
                 .map(Utente::getId)
@@ -173,7 +153,6 @@ public class UtenteServiceImpl implements UtenteService {
         int expectedId = 1;
         for (Integer id : ids) {
             if (id > expectedId) {
-                // Trovato un "buco" nella sequenza
                 return expectedId;
             } else if (id == expectedId) {
                 expectedId++;

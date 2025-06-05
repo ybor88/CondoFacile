@@ -5,12 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>CondoFacile - Benvenuto</title>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/img/condofacileLogo.png" />
-
-    <!-- CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <!-- JSEncrypt per cifratura password -->
     <script src="/js/script.js" defer></script>
 </head>
 <body>
@@ -27,18 +23,10 @@
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>Registrazione</h2>
         <form id="registrationForm">
-            <label>
-                <input type="text" name="nome" placeholder="Nome" required />
-            </label>
-            <label>
-                <input type="text" name="cognome" placeholder="Cognome" required />
-            </label>
-            <label>
-                <input type="email" name="email" placeholder="Email" required />
-            </label>
-            <label>
-                <input type="password" name="password" placeholder="Password" required />
-            </label>
+            <label><input type="text" name="nome" placeholder="Nome" required /></label>
+            <label><input type="text" name="cognome" placeholder="Cognome" required /></label>
+            <label><input type="email" name="email" placeholder="Email" required /></label>
+            <label><input type="password" name="password" placeholder="Password" required /></label>
             <label>
                 <select name="ruolo" required>
                     <option value="" disabled selected>Seleziona Ruolo</option>
@@ -47,7 +35,6 @@
                 </select>
             </label>
             <label>
-                <!-- Qui cambiato da input text a select -->
                 <select name="appartamento" id="appartamentoSelect" required>
                     <option value="" disabled selected>Seleziona Appartamento</option>
                 </select>
@@ -63,14 +50,19 @@
         <span class="close" onclick="closeLoginModal()">&times;</span>
         <h2>Accedi</h2>
         <form id="loginForm">
-            <label>
-                <input type="email" name="email" placeholder="Email" required />
-            </label>
-            <label>
-                <input type="password" name="password" placeholder="Password" required />
-            </label>
+            <label><input type="email" name="email" placeholder="Email" required /></label>
+            <label><input type="password" name="password" placeholder="Password" required /></label>
             <button type="submit">Accedi</button>
         </form>
+    </div>
+</div>
+
+<!-- MODALE MESSAGGIO -->
+<div id="messageModal" class="modal">
+    <div class="modal-content" id="messageModalContent">
+        <span class="close" onclick="closeMessageModal()">&times;</span>
+        <h2 id="messageTitle">Titolo</h2>
+        <p id="messageText">Testo del messaggio</p>
     </div>
 </div>
 </body>

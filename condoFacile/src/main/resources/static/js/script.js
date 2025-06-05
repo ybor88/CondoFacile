@@ -14,15 +14,31 @@ function closeLoginModal() {
     document.getElementById('loginModal').style.display = 'none';
 }
 
+function closeMessageModal() {
+    document.getElementById('messageModal').style.display = 'none';
+}
+
+function showMessageModal(type, title, message) {
+    const modal = document.getElementById('messageModal');
+    const content = document.getElementById('messageModalContent');
+    const titleElem = document.getElementById('messageTitle');
+    const textElem = document.getElementById('messageText');
+
+    content.className = 'modal-content ' + type;
+    titleElem.textContent = title;
+    textElem.textContent = message;
+
+    modal.style.display = 'block';
+}
+
 window.onclick = function(event) {
     const regModal = document.getElementById('registrationModal');
     const logModal = document.getElementById('loginModal');
+    const msgModal = document.getElementById('messageModal');
 
-    if (event.target === regModal) {
-        closeModal();
-    } else if (event.target === logModal) {
-        closeLoginModal();
-    }
+    if (event.target === regModal) closeModal();
+    if (event.target === logModal) closeLoginModal();
+    if (event.target === msgModal) closeMessageModal();
 };
 
 async function hashPassword(password) {
@@ -30,12 +46,10 @@ async function hashPassword(password) {
     const data = encoder.encode(password);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-
     const appartamentoSelect = document.getElementById('appartamentoSelect');
 
     async function caricaAppartamentiDisponibili() {
@@ -44,29 +58,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!res.ok) throw new Error("Errore nel caricamento appartamenti");
 
             const response = await res.json();
-            console.log("Risposta API appartamenti:", response);
-
-            // Estraggo l'array di appartamenti dal campo data
             const appartamenti = response.data;
 
-            if (!Array.isArray(appartamenti)) {
-                throw new Error("Dati appartamenti non sono un array");
-            }
+            if (!Array.isArray(appartamenti)) throw new Error("Formato dati non valido");
 
             appartamentoSelect.innerHTML = '<option value="" disabled selected>Seleziona Appartamento</option>';
-
-            appartamenti.forEach(appartamento => {
-                // Prendo solo i codici di appartamento non occupati
-                if (!appartamento.occupato) {
-                    const option = document.createElement('option');
-                    option.value = appartamento.codice;
-                    option.textContent = appartamento.codice;
-                    appartamentoSelect.appendChild(option);
+            appartamenti.forEach(app => {
+                if (!app.occupato) {
+                    const opt = document.createElement('option');
+                    opt.value = app.codice;
+                    opt.textContent = app.codice;
+                    appartamentoSelect.appendChild(opt);
                 }
             });
 
-            appartamentoSelect.disabled = false; // abilita la select
-
+            appartamentoSelect.disabled = false;
         } catch (error) {
             console.error(error);
             appartamentoSelect.disabled = true;
@@ -76,16 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     caricaAppartamentiDisponibili();
 
-    const regForm = document.getElementById('registrationForm');
-    regForm.addEventListener('submit', async function(e) {
+    document.getElementById('registrationForm').addEventListener('submit', async function (e) {
         e.preventDefault();
-
         const formData = new FormData(this);
         const payload = Object.fromEntries(formData.entries());
-
-        // Hash della password con SHA-256
-        const hashedPassword = await hashPassword(payload.password);
-        payload.password = hashedPassword;
+        payload.password = await hashPassword(payload.password);
 
         try {
             const res = await fetch('/condofacile/api/utenti', {
@@ -95,26 +96,22 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (res.ok) {
-                alert("Registrazione completata!");
+                showMessageModal("success", "Registrazione riuscita", "Benvenuto su CondoFacile!");
                 closeModal();
                 this.reset();
             } else {
                 const data = await res.json();
-                alert("Errore: " + (data.message || "Registrazione fallita"));
+                showMessageModal("error", "Errore", data.error || "Registrazione fallita");
             }
         } catch (err) {
-            alert("Errore di rete o server.");
+            showMessageModal("error", "Errore di rete", "Si è verificato un errore di connessione.");
         }
     });
 
-    const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', async function(e) {
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
         e.preventDefault();
-
         const formData = new FormData(this);
         const payload = Object.fromEntries(formData.entries());
-
-        // Se vuoi, qui puoi aggiungere la cifratura della password come sopra
 
         try {
             const res = await fetch('/api/login', {
@@ -124,16 +121,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (res.ok) {
-                alert("Accesso effettuato!");
+                showMessageModal("success", "Accesso effettuato", "Verrai reindirizzato...");
                 closeLoginModal();
                 this.reset();
-                location.href = "/dashboard"; // pagina post-login
+                setTimeout(() => location.href = "/dashboard", 1500);
             } else {
                 const data = await res.json();
-                alert("Errore: " + (data.message || "Accesso fallito"));
+                showMessageModal("error", "Errore di accesso", data.message || "Email o password non valide.");
             }
         } catch (err) {
-            alert("Errore di rete o server.");
+            showMessageModal("error", "Errore di rete", "Impossibile contattare il server.");
         }
     });
 });
