@@ -10,4 +10,5 @@ public interface UtenteService {
     UtenteDTO create(UtenteDTO dto);
     UtenteDTO update(Integer id, UtenteDTO dto);
     void delete(Integer id);
+    void deleteAllCondomini();
 }

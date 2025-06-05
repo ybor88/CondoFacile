@@ -93,4 +93,16 @@ public class UtenteController {
         // anche se 204 non ha body, con questa struttura ritorniamo 200 con messaggio
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/delete-condomini")
+    public ResponseEntity<Map<String, Object>> deleteAllCondomini() {
+        service.deleteAllCondomini();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.OK.value());
+        response.put("message", "Tutti i condomini sono stati eliminati con successo");
+        response.put("data", null);
+
+        return ResponseEntity.ok(response);
+    }
 }

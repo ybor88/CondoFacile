@@ -181,4 +181,13 @@ public class UtenteServiceImpl implements UtenteService {
         }
         return expectedId;
     }
+
+    @Override
+    @Transactional
+    public void deleteAllCondomini() {
+        log.warn("Eliminazione massiva di tutti gli utenti con ruolo 'condomino'");
+
+        int deletedCount = repository.deleteAllCondomini();
+        log.info("Eliminati {} utenti con ruolo 'condomino'", deletedCount);
+    }
 }
