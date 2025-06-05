@@ -53,8 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const appartamentoSelect = document.getElementById('appartamentoSelect');
 
     async function caricaAppartamentiDisponibili() {
+        const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
         try {
-            const res = await fetch('/condofacile/api/register/appartamentiList');
+            const res = await fetch('/condofacile/api/register/appartamentiList', {
+                method: 'GET',
+                headers: {
+                    'Authorization': TOKEN,
+                    'Content-Type': 'application/json'
+                }
+            });
             if (!res.ok) throw new Error("Errore nel caricamento appartamenti");
 
             const response = await res.json();
@@ -89,9 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
         payload.password = await hashPassword(payload.password);
 
         try {
+            const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
             const res = await fetch('/condofacile/api/utenti', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Authorization': TOKEN,
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(payload)
             });
 
@@ -114,9 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const payload = Object.fromEntries(formData.entries());
 
         try {
+            const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
             const res = await fetch('/api/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Authorization': TOKEN,
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(payload)
             });
 
