@@ -185,12 +185,11 @@ ticket
 -----------
 1)non devo poter inserire tutti i piani ma solo quelli disponibile dal menu a tendina(non devono uscire occupati)    x
 (servizio be).
-  -api per truncate table degli utenti(solo)
-  -bindare la lista degli appartamenti nel menu a tendina
+  - creazione servizio api get all appartamenti
 
 
 2)migliorare il fe responsive iphone
-3)ogni messaggio di errore e di successo deve avere la pop up piu carica. 
+3)ogni messaggio di errore e di successo deve avere la pop up piu carina. 
 4)spring security api
 
 

@@ -19,7 +19,7 @@ public class RegisterController {
     @Autowired
     private RegisterService service;
 
-    @GetMapping("/appartamenti")
+    @GetMapping("/appartamentiList")
     public ResponseEntity<Map<String, Object>> getAvailableAppartamenti() {
         List<AppartamentoDTO> appartamenti = service.getAvailableAppartamenti();
         Map<String, Object> response = new HashMap<>();

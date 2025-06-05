@@ -26,30 +26,69 @@ window.onclick = function(event) {
 };
 
 async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  return hashHex;
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    const appartamentoSelect = document.getElementById('appartamentoSelect');
 
-        const regForm = document.getElementById('registrationForm');
-        regForm.addEventListener('submit', async function(e) {
+    async function caricaAppartamentiDisponibili() {
+        try {
+            const res = await fetch('/condofacile/api/register/appartamentiList');
+            if (!res.ok) throw new Error("Errore nel caricamento appartamenti");
+
+            const response = await res.json();
+            console.log("Risposta API appartamenti:", response);
+
+            // Estraggo l'array di appartamenti dal campo data
+            const appartamenti = response.data;
+
+            if (!Array.isArray(appartamenti)) {
+                throw new Error("Dati appartamenti non sono un array");
+            }
+
+            appartamentoSelect.innerHTML = '<option value="" disabled selected>Seleziona Appartamento</option>';
+
+            appartamenti.forEach(appartamento => {
+                // Prendo solo i codici di appartamento non occupati
+                if (!appartamento.occupato) {
+                    const option = document.createElement('option');
+                    option.value = appartamento.codice;
+                    option.textContent = appartamento.codice;
+                    appartamentoSelect.appendChild(option);
+                }
+            });
+
+            appartamentoSelect.disabled = false; // abilita la select
+
+        } catch (error) {
+            console.error(error);
+            appartamentoSelect.disabled = true;
+            appartamentoSelect.innerHTML = '<option value="" disabled>Errore nel caricamento</option>';
+        }
+    }
+
+    caricaAppartamentiDisponibili();
+
+    const regForm = document.getElementById('registrationForm');
+    regForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const formData = new FormData(this);
         const payload = Object.fromEntries(formData.entries());
 
-       // Hash della password con SHA-256
+        // Hash della password con SHA-256
         const hashedPassword = await hashPassword(payload.password);
         payload.password = hashedPassword;
 
         try {
-              const res = await fetch('/condofacile/api/utenti', {  // <-- qui cambio endpoint
+            const res = await fetch('/condofacile/api/utenti', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -75,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(this);
         const payload = Object.fromEntries(formData.entries());
 
-        // Se vuoi, puoi aggiungere anche qui cifratura password come sopra.
+        // Se vuoi, qui puoi aggiungere la cifratura della password come sopra
 
         try {
             const res = await fetch('/api/login', {
@@ -88,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert("Accesso effettuato!");
                 closeLoginModal();
                 this.reset();
-                location.href = "/dashboard"; // o la tua pagina post-login
+                location.href = "/dashboard"; // pagina post-login
             } else {
                 const data = await res.json();
                 alert("Errore: " + (data.message || "Accesso fallito"));
