@@ -27,7 +27,7 @@ public class UtenteController {
 
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
-        response.put("message", "Lista utenti");
+        response.put("message", "Lista utenti: tot - " + utenti.size());
         response.put("data", utenti);
 
         return ResponseEntity.ok(response);

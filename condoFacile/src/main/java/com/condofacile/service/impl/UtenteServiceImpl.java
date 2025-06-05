@@ -7,6 +7,7 @@ import com.condofacile.error.UserCreationException;
 import com.condofacile.repository.AppartamentoRepository;
 import com.condofacile.repository.UtenteRepository;
 import com.condofacile.service.UtenteService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,8 +131,33 @@ public class UtenteServiceImpl implements UtenteService {
     @Override
     @Transactional
     public void delete(Integer id) {
-        log.warn("Eliminazione utente con ID {}", id);
+        log.warn("Richiesta eliminazione utente con ID {}", id);
+
+        // Verifica se l'utente esiste
+        if (!repository.existsById(id)) {
+            log.error("Utente con ID {} non trovato. Operazione annullata.", id);
+            throw new EntityNotFoundException("Utente non trovato con ID: " + id);
+        }
+
+        // Recupero codice appartamento prima di eliminare
+        String codiceAppartamento = repository.getCodiceAppartamentoById(id);
+        if (codiceAppartamento == null) {
+            log.warn("Nessun codice appartamento associato all'utente con ID {}", id);
+        }
+
+        // Eliminazione utente
         repository.deleteById(id);
+        log.info("Utente con ID {} eliminato correttamente", id);
+
+        // Aggiorna occupazione appartamento se esiste
+        if (codiceAppartamento != null) {
+            int updated = appartamentoRepository.setOccupatoFalseByCodice(codiceAppartamento);
+            if (updated > 0) {
+                log.info("Appartamento con codice {} marcato come non occupato", codiceAppartamento);
+            } else {
+                log.warn("Nessun appartamento aggiornato per il codice {}", codiceAppartamento);
+            }
+        }
     }
 
     /**

@@ -19,4 +19,9 @@ public interface AppartamentoRepository extends JpaRepository<Appartamento, Long
     @Transactional
     @Query("UPDATE Appartamento a SET a.occupato = true WHERE a.codice = :codiceAppartamento")
     int setOccupatoTrueByCodice(String codiceAppartamento);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Appartamento a SET a.occupato = false WHERE a.codice = :codiceAppartamento")
+    int setOccupatoFalseByCodice(String codiceAppartamento);
 }

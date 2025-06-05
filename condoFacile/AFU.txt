@@ -185,8 +185,8 @@ ticket
 -----------
 1)non devo poter inserire tutti i piani ma solo quelli disponibile dal menu a tendina(non devono uscire occupati)    x
 (servizio be).
-  -quando elimino devo mettere il piano nella appartamenti a false 
-  -quando aggiorno e cambio l'appartamento devo verificare se esiste , se è libero ed aggiornare l'appartamenti a true
+  -api per truncate table degli utenti(solo)
+  -bindare la lista degli appartamenti nel menu a tendina
 
 
 2)migliorare il fe responsive iphone
