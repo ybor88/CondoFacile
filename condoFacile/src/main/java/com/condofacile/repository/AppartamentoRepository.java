@@ -27,7 +27,7 @@ public interface AppartamentoRepository extends JpaRepository<Appartamento, Long
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Appartamento a WHERE a.occupato = true")
+    @Query("UPDATE Appartamento a SET a.occupato = false")
     int deleteAllOccupatoTrue();
 
 }

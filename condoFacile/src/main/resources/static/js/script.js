@@ -119,33 +119,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('loginForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const payload = Object.fromEntries(formData.entries());
+   document.getElementById('loginForm').addEventListener('submit', async function (e) {
+       e.preventDefault();
+       const formData = new FormData(this);
+       const payload = Object.fromEntries(formData.entries());
+       payload.password = await hashPassword(payload.password);
 
-        try {
-            const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Authorization': TOKEN,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
+       try {
+           const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
+           const res = await fetch('/condofacile/api/login/validate', {
+               method: 'POST',
+               headers: {
+                   'Authorization': TOKEN,
+                   'Content-Type': 'application/json'
+               },
+               body: JSON.stringify(payload)
+           });
 
-            if (res.ok) {
-                showMessageModal("success", "Accesso effettuato", "Verrai reindirizzato...");
-                closeLoginModal();
-                this.reset();
-                setTimeout(() => location.href = "/dashboard", 1500);
-            } else {
-                const data = await res.json();
-                showMessageModal("error", "Errore di accesso", data.message || "Email o password non valide.");
-            }
-        } catch (err) {
-            showMessageModal("error", "Errore di rete", "Impossibile contattare il server.");
-        }
-    });
+           const data = await res.json(); // <- qui può sollevare eccezioni se non è un JSON valido
+
+           if (res.ok) {
+               showMessageModal("success", "Accesso effettuato", "Benvenuto! Verrai reindirizzato...");
+               closeLoginModal();
+               this.reset();
+               setTimeout(() => location.href = "/dashboard", 1500);
+           } else {
+               showMessageModal("error", "Errore di accesso", data.message || "Email o password non valide.");
+           }
+       } catch (err) {
+           console.error("Errore nel login:", err);
+           showMessageModal("error", "Errore di rete", "Impossibile contattare il server.");
+       }
+   });
 });

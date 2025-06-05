@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Slf4j
 @RestController
@@ -21,22 +24,33 @@ public class LoginController {
     private UtenteService service;
 
     @PostMapping("/validate")
-    public ResponseEntity<?> validateLogin(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<Map<String, Object>> validateLogin(@RequestBody LoginRequestDTO loginRequest) {
+        Map<String, Object> response = new HashMap<>();
+
         try {
             boolean isValid = service.validateLogin(loginRequest.getEmail(), loginRequest.getPassword());
-            if (isValid) {
-                return ResponseEntity.ok("Credenziali valide");
-            } else {
-                // teoricamente qui non arrivi perché il service lancia eccezioni
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenziali non valide");
-            }
+
+            response.put("status", HttpStatus.OK.value());
+            response.put("message", "Credenziali valide");
+            response.put("data", isValid);
+
+            return ResponseEntity.ok(response);
+
         } catch (EmailNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            response.put("status", HttpStatus.NOT_FOUND.value());
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
         } catch (PasswordIncorrectException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            response.put("status", HttpStatus.UNAUTHORIZED.value());
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+
         } catch (Exception e) {
             log.error("Errore durante la validazione login", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno del server");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("message", "Errore interno del server");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

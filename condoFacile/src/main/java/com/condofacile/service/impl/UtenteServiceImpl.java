@@ -9,7 +9,6 @@ import com.condofacile.error.UserCreationException;
 import com.condofacile.repository.AppartamentoRepository;
 import com.condofacile.repository.UtenteRepository;
 import com.condofacile.service.UtenteService;
-import com.condofacile.util.PasswordUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +45,7 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     private Utente toEntity(UtenteDTO dto) {
-        Utente build = Utente.builder()
+        return Utente.builder()
                 .nome(dto.getNome())
                 .cognome(dto.getCognome())
                 .email(dto.getEmail())
@@ -55,7 +54,6 @@ public class UtenteServiceImpl implements UtenteService {
                 .attivo(dto.getAttivo() != null ? dto.getAttivo() : true)
                 .passwordHash(dto.getPassword())
                 .build();
-        return build;
     }
 
     @Override
