@@ -166,7 +166,10 @@ public class UtenteServiceImpl implements UtenteService {
     public void deleteAllCondomini() {
         log.warn("Eliminazione massiva di tutti gli utenti con ruolo 'condomino'");
 
-        int deletedCount = repository.deleteAllCondomini();
+        int deletedCount = repository.deleteAllCondomini(); // cancella utenti condomini
+        int deletedAppartamentiCount = appartamentoRepository.deleteAllOccupatoTrue(); // cancella appartamenti occupati
+
         log.info("Eliminati {} utenti con ruolo 'condomino'", deletedCount);
+        log.info("Eliminati {} appartamenti occupati", deletedAppartamentiCount);
     }
 }
