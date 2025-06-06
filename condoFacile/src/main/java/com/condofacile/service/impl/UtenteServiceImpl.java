@@ -45,15 +45,16 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     private Utente toEntity(UtenteDTO dto) {
-        return Utente.builder()
+        Utente build = Utente.builder()
                 .nome(dto.getNome())
                 .cognome(dto.getCognome())
                 .email(dto.getEmail())
                 .ruolo(Ruolo.valueOf(dto.getRuolo()))
                 .appartamento(dto.getAppartamento())
-                .attivo(dto.getAttivo() != null ? dto.getAttivo() : true)
+                .attivo((dto.getAttivo() != null) ? dto.getAttivo() : true)
                 .passwordHash(dto.getPassword())
                 .build();
+        return build;
     }
 
     @Override
