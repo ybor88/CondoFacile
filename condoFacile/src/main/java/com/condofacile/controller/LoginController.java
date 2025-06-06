@@ -1,6 +1,7 @@
 package com.condofacile.controller;
 
 import com.condofacile.dto.LoginRequestDTO;
+import com.condofacile.dto.UtenteDTO;
 import com.condofacile.error.EmailNotFoundException;
 import com.condofacile.error.PasswordIncorrectException;
 import com.condofacile.service.UtenteService;
@@ -28,11 +29,11 @@ public class LoginController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            boolean isValid = service.validateLogin(loginRequest.getEmail(), loginRequest.getPassword());
+            UtenteDTO utenteDTO = service.validateLogin(loginRequest.getEmail(), loginRequest.getPassword());
 
             response.put("status", HttpStatus.OK.value());
             response.put("message", "Credenziali valide");
-            response.put("data", isValid);
+            response.put("data", utenteDTO);
 
             return ResponseEntity.ok(response);
 

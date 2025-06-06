@@ -177,19 +177,17 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
-    public boolean validateLogin(String email, String password) {
+    public UtenteDTO validateLogin(String email, String password) {
         Optional<Utente> utenteOpt = repository.findByEmail(email);
         if (utenteOpt.isEmpty()) {
-            // Email non trovata
             throw new EmailNotFoundException("Email non presente, devi registrarti");
         }
         Utente utente = utenteOpt.get();
 
         if (!utente.getPasswordHash().equals(password)) {
-            // Password errata
             throw new PasswordIncorrectException("Password errata");
         }
-        // Credenziali corrette
-        return true;
+
+        return toDTO(utente); // Usa un mapper per convertire l'entità in DTO
     }
 }

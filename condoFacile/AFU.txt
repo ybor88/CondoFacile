@@ -183,6 +183,8 @@ http://localhost:9090/Condofacile
 
 ticket 
 -----------
-1)bind servizio validate con messaggio di successo o errore
+1)dashboard utente home -> mostrare Benvenuto nome cognome e data e ora ultimo accesso(giorni fa)
+modifica validateLogin e ritorno oggetto con info utente ed errori eventuali
+se no errore è vuoto 
 
 
