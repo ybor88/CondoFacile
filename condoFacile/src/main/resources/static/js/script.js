@@ -14,6 +14,14 @@ function closeLoginModal() {
     document.getElementById('loginModal').style.display = 'none';
 }
 
+function openRecoverPasswordModal() {
+    document.getElementById('recoverPasswordModal').style.display = 'block';
+}
+
+function closeRecoverPasswordModal() {
+    document.getElementById('recoverPasswordModal').style.display = 'none';
+}
+
 function closeMessageModal() {
     document.getElementById('messageModal').style.display = 'none';
 }
@@ -35,10 +43,12 @@ window.onclick = function(event) {
     const regModal = document.getElementById('registrationModal');
     const logModal = document.getElementById('loginModal');
     const msgModal = document.getElementById('messageModal');
+    const recModal = document.getElementById('recoverPasswordModal');
 
     if (event.target === regModal) closeModal();
     if (event.target === logModal) closeLoginModal();
     if (event.target === msgModal) closeMessageModal();
+    if (event.target === recModal) closeRecoverPasswordModal();
 };
 
 async function hashPassword(password) {
@@ -62,12 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
                 }
             });
+
             if (!res.ok) throw new Error("Errore nel caricamento appartamenti");
 
             const response = await res.json();
             const appartamenti = response.data;
-
-            if (!Array.isArray(appartamenti)) throw new Error("Formato dati non valido");
 
             appartamentoSelect.innerHTML = '<option value="" disabled selected>Seleziona Appartamento</option>';
             appartamenti.forEach(app => {
@@ -119,36 +128,74 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-   document.getElementById('loginForm').addEventListener('submit', async function (e) {
-       e.preventDefault();
-       const formData = new FormData(this);
-       const payload = Object.fromEntries(formData.entries());
-       payload.password = await hashPassword(payload.password);
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const payload = Object.fromEntries(formData.entries());
+        payload.password = await hashPassword(payload.password);
 
-       try {
-           const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
-           const res = await fetch('/condofacile/api/login/validate', {
-               method: 'POST',
-               headers: {
-                   'Authorization': TOKEN,
-                   'Content-Type': 'application/json'
-               },
-               body: JSON.stringify(payload)
-           });
+        try {
+            const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
+            const res = await fetch('/condofacile/api/login/validate', {
+                method: 'POST',
+                headers: {
+                    'Authorization': TOKEN,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
 
-           const data = await res.json(); // <- qui può sollevare eccezioni se non è un JSON valido
+            const data = await res.json();
 
-           if (res.ok) {
-               showMessageModal("success", "Accesso effettuato", "Benvenuto! Verrai reindirizzato...");
-               closeLoginModal();
-               this.reset();
-               setTimeout(() => location.href = "/dashboard", 1500);
-           } else {
-               showMessageModal("error", "Errore di accesso", data.message || "Email o password non valide.");
-           }
-       } catch (err) {
-           console.error("Errore nel login:", err);
-           showMessageModal("error", "Errore di rete", "Impossibile contattare il server.");
-       }
-   });
+            if (res.ok) {
+                showMessageModal("success", "Accesso effettuato", "Benvenuto! Verrai reindirizzato...");
+                closeLoginModal();
+                this.reset();
+                setTimeout(() => location.href = "/dashboard", 1500);
+            } else {
+                showMessageModal("error", "Errore di accesso", data.message || "Email o password non valide.");
+            }
+        } catch (err) {
+            console.error("Errore nel login:", err);
+            showMessageModal("error", "Errore di rete", "Impossibile contattare il server.");
+        }
+    });
+
+    document.getElementById('recoverPasswordForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const method = document.querySelector('input[name="recoveryMethod"]:checked').value;
+        const newPassword = this.newPassword.value;
+
+        const hashedPassword = await hashPassword(newPassword);
+
+        try {
+            const payload = {
+                recoveryMethod: method,
+                newPassword: hashedPassword
+            };
+
+            const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
+
+            const res = await fetch('/condofacile/api/password/recover', {
+                method: 'POST',
+                headers: {
+                    'Authorization': TOKEN,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                showMessageModal("success", "Password aggiornata", `La tua nuova password è stata inviata via ${method.toUpperCase()}`);
+                closeRecoverPasswordModal();
+                this.reset();
+            } else {
+                const data = await res.json();
+                showMessageModal("error", "Errore", data.message || "Impossibile aggiornare la password.");
+            }
+        } catch (err) {
+            showMessageModal("error", "Errore di rete", "Si è verificato un errore di connessione.");
+        }
+    });
 });

@@ -184,9 +184,9 @@ http://localhost:9090/Condofacile
 ticket 
 ---------------------------------------------------------------
 
-2)clicca su link, ricevi sms o email -> dai un email e la nuova password -> hai ricevuto un email , hai ricevuto un sms , clicca sul link -> password aggiornata , riprova la login
+1)clicca su link, ricevi sms o email -> dai un email e la nuova password -> hai ricevuto un email , hai ricevuto un sms , clicca sul link -> password aggiornata , riprova la login
 
-1)dashboard utente home -> mostrare Benvenuto nome cognome e data e ora ultimo accesso(giorni fa)
+2)dashboard utente home -> mostrare Benvenuto nome cognome e data e ora ultimo accesso(giorni fa)
 modifica validateLogin e ritorno oggetto con info utente ed errori eventuali
 se no errore è vuoto 
 

@@ -54,6 +54,9 @@
             <label><input type="password" name="password" placeholder="Password" required /></label>
             <button type="submit">Accedi</button>
         </form>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">
+            Non ricordi la password? <a href="#" onclick="openRecoverPasswordModal()">Recupera</a>
+        </p>
     </div>
 </div>
 
@@ -63,6 +66,32 @@
         <span class="close" onclick="closeMessageModal()">&times;</span>
         <h2 id="messageTitle">Titolo</h2>
         <p id="messageText">Testo del messaggio</p>
+    </div>
+</div>
+<!-- MODALE RECUPERO PASSWORD -->
+<div id="recoverPasswordModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeRecoverPasswordModal()">&times;</span>
+        <h2>Recupera Password</h2>
+        <form id="recoverPasswordForm">
+            <h3>Metodo di recupero</h3>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="recoveryMethod" value="sms" required />
+                    SMS
+                </label>
+                <label>
+                    <input type="radio" name="recoveryMethod" value="email" required />
+                    Email
+                </label>
+            </div>
+
+            <label>
+                <input type="password" name="newPassword" placeholder="Nuova Password" required />
+            </label>
+
+            <button type="submit">Invia nuova password</button>
+        </form>
     </div>
 </div>
 </body>
