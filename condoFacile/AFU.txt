@@ -181,6 +181,29 @@ Start App
 
 http://localhost:9090/Condofacile
 
+creare test account gmail
+
+username=condofaciletest@gmail.com
+password=345bbgat@k2332NMH!
+
+come configurare l'smtp di google :
+
+Passaggi per generare una Password per App:
+Vai su:
+https://myaccount.google.com/apppasswords
+
+Ti verrà chiesto di accedere e di confermare l’identità (con 2FA).
+
+L'autenticazione a due fattori (2FA) non è attiva
+Soluzione:
+Attiva la verifica in due passaggi qui https://myaccount.google.com/security
+→ Sezione "Verifica in due passaggi"
+→ Attivala, poi riprova ad accedere a https://myaccount.google.com/apppasswords
+
+poi una volta generata la password e scelto un nome app la setti qui :
+spring.mail.password=hitvaavtvbcpclno (application properties)
+
+
 ticket 
 ---------------------------------------------------------------
 

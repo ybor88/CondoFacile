@@ -161,41 +161,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('recoverPasswordForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
+  document.getElementById('recoverPasswordForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-        const method = document.querySelector('input[name="recoveryMethod"]:checked').value;
-        const newPassword = this.newPassword.value;
+      const email = this.email.value;
+      const newPassword = this.newPassword.value;
 
-        const hashedPassword = await hashPassword(newPassword);
+      // Hashiamo la nuova password
+      const hashedPassword = await hashPassword(newPassword);
 
-        try {
-            const payload = {
-                recoveryMethod: method,
-                newPassword: hashedPassword
-            };
+      const payload = {
+          recoveryMethod: 'email',  // fisso a email
+          email: email,
+          newPassword: hashedPassword
+      };
 
-            const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
+      try {
+          const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
+          const res = await fetch('/condofacile/restore/password/recover', {
+              method: 'POST',
+              headers: {
+                  'Authorization': TOKEN,
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+          });
 
-            const res = await fetch('/condofacile/api/password/recover', {
-                method: 'POST',
-                headers: {
-                    'Authorization': TOKEN,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (res.ok) {
-                showMessageModal("success", "Password aggiornata", `La tua nuova password è stata inviata via ${method.toUpperCase()}`);
-                closeRecoverPasswordModal();
-                this.reset();
-            } else {
-                const data = await res.json();
-                showMessageModal("error", "Errore", data.message || "Impossibile aggiornare la password.");
-            }
-        } catch (err) {
-            showMessageModal("error", "Errore di rete", "Si è verificato un errore di connessione.");
-        }
-    });
+          if (res.ok) {
+              showMessageModal("success", "Password aggiornata", `Ti abbiamo inviato un link via EMAIL per reimpostare la password.`);
+              closeRecoverPasswordModal();
+              this.reset();
+          } else {
+              const data = await res.json();
+              showMessageModal("error", "Errore", data.message || "Impossibile inviare la nuova password.");
+          }
+      } catch (err) {
+          showMessageModal("error", "Errore di rete", "Si è verificato un errore di connessione.");
+      }
+  });
 });
