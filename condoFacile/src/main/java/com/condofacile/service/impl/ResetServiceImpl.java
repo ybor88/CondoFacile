@@ -2,7 +2,6 @@ package com.condofacile.service.impl;
 
 import com.condofacile.service.EmailService;
 import com.condofacile.service.ResetService;
-import com.condofacile.service.SmsService;
 import com.condofacile.repository.UtenteRepository;
 import com.condofacile.entity.Utente;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +16,6 @@ public class ResetServiceImpl implements ResetService {
 
     @Autowired
     private EmailService emailService;
-
-    @Autowired
-    private SmsService smsService;
 
     @Autowired
     private UtenteRepository utenteRepository;
