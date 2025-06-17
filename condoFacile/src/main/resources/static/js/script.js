@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
 
           if (res.ok) {
-              showMessageModal("success", "Password aggiornata", `Ti abbiamo inviato un link via EMAIL per reimpostare la password.`);
+              showMessageModal("success", "Password aggiornata", "Abbiamo inviato un link alla tua email per completare il reset della password. Clicca sul link e accedi con la nuova password.");
               closeRecoverPasswordModal();
               this.reset();
           } else {

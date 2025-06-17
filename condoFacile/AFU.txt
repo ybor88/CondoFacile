@@ -206,6 +206,4 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 
 ticket 
 ---------------------------------------------------------------
-3)aggiungere cliccare sul link per email per cambiare la password e ritenta
-l'accesso con le nuove credenziali(anche inserisci nuova password e l'indirizzo
-per recuperare l'email
+1)dashboard.
