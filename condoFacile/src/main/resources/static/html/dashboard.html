@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CondoFacile - Dashboard</title>
+
+    <link rel="icon" type="image/png" href="/img/condofacileLogo.png" />
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="container">
+    <img src="/img/condofacileLogo.png" alt="Logo CondoFacile" style="width: 100px; margin-bottom: 1rem;" />
+    <div class="logo">Benvenuto in CondoFacile</div>
+    <p id="welcomeText" style="color: #fff0f0; font-size: 1.2rem; margin: 1rem 0;"></p>
+    <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+    const userData = JSON.parse(localStorage.getItem("userData"));
+
+    if (!userData || !userData.nome || !userData.email) {
+        alert("Sessione non valida. Effettua nuovamente il login.");
+        window.location.href = "/Condofacile";
+    } else {
+        document.getElementById("welcomeText").textContent =
+          `Ciao ${userData.nome} ${userData.cognome} (${userData.email}), benvenuto nella tua area riservata!`;
+    }
+
+    function logout() {
+        localStorage.removeItem("userData");
+        location.href = "/Condofacile";
+    }
+</script>
+</body>
+</html>

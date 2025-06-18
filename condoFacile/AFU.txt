@@ -206,4 +206,6 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 
 ticket 
 ---------------------------------------------------------------
-1)dashboard.
+1)disegna la dashboard come dashboard a tutti gli effetti...aggiungendo i bottoni delle funzionalità
+e predisponendo bene il layout
+2)aggiungere security si dati della sessione.

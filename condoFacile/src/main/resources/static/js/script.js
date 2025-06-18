@@ -147,12 +147,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await res.json();
 
-            if (res.ok) {
-                showMessageModal("success", "Accesso effettuato", "Benvenuto! Verrai reindirizzato...");
-                closeLoginModal();
-                this.reset();
-                setTimeout(() => location.href = "/dashboard", 1500);
-            } else {
+        if (res.ok) {
+            const utente = data.data;
+
+            localStorage.setItem("userData", JSON.stringify({
+                email: utente.email,
+                nome: utente.nome,
+                cognome: utente.cognome
+            }));
+
+            showMessageModal("success", "Accesso effettuato", "Benvenuto! Verrai reindirizzato...");
+            closeLoginModal();
+            this.reset();
+            setTimeout(() => location.href = "/html/dashboard.html", 1500);
+        } else {
                 showMessageModal("error", "Errore di accesso", data.message || "Email o password non valide.");
             }
         } catch (err) {
