@@ -206,4 +206,4 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 
 ticket 
 ---------------------------------------------------------------
-1)aggiungi i filtri e fixa l'importo
+1)un pulsante per azzerrare tutti i filtri

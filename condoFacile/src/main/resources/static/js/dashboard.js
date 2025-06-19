@@ -1,3 +1,7 @@
+// dashboard.js
+
+let tutteLeBollette = [];
+
 document.addEventListener("DOMContentLoaded", () => {
   const userData = JSON.parse(localStorage.getItem("userData"));
   if (!userData || !userData.nome || !userData.email) {
@@ -46,29 +50,99 @@ async function caricaBollette() {
     if (!res.ok) throw new Error("Errore nel recupero delle bollette");
 
     const result = await res.json();
-    const bollette = result.data; // <-- CORRETTO QUI
+    const bollette = result.data;
 
     if (!Array.isArray(bollette)) throw new Error("Formato risposta non valido");
 
-    let html = `<h3>📄 Le tue Bollette</h3><ul style="list-style:none;padding:0;">`;
+    tutteLeBollette = bollette;
 
-   bollette.forEach(b => {
-        html += `
-          <li style="background:#fff;padding:1rem;margin-bottom:1rem;border-radius:10px;">
-            <strong>Descrizione:</strong> ${b.descrizione}<br/>
-            <strong>Importo:</strong> €${b.importo.toFixed(2)}<br/>
-            <strong>Data Emissione:</strong> ${b.dataEmissione}<br/>
-            <strong>Data Scadenza:</strong> ${b.dataScadenza}<br/>
-            <strong>Stato:</strong> ${b.pagata ? "✅ Pagata" : "❌ Da pagare"}<br/>
-            <a href="${b.fileUrl}" target="_blank">📎 Scarica PDF</a>
-          </li>
-        `;
-      });
+    let html = `
+      <h3>📄 Le tue Bollette</h3>
+
+      <div id="filtri" style="margin-bottom:1rem;background:#f0f0f0;padding:1rem;border-radius:10px;">
+        <h4>🔍 Filtra Bollette</h4>
+        <input type="text" id="filtroDescrizione" placeholder="Descrizione" />
+        <input type="number" id="filtroImportoMin" placeholder="Importo Min" />
+        <input type="number" id="filtroImportoMax" placeholder="Importo Max" />
+        <input type="date" id="filtroDataEmissione" />
+        <input type="date" id="filtroDataScadenza" />
+        <select id="filtroStato">
+          <option value="">Tutti gli stati</option>
+          <option value="pagata">✅ Pagata</option>
+          <option value="non_pagata">❌ Da pagare</option>
+        </select>
+        <button onclick="applicaFiltri()">Applica Filtri</button>
+      </div>
+
+      <ul id="listaBollette" style="list-style:none;padding:0;">
+    `;
+
+    bollette.forEach(b => {
+      html += `
+        <li style="background:#fff;padding:1rem;margin-bottom:1rem;border-radius:10px;">
+          <strong>Descrizione:</strong> ${b.descrizione}<br/>
+          <strong>Importo:</strong> €${b.importo.toFixed(2)}<br/>
+          <strong>Data Emissione:</strong> ${b.dataEmissione}<br/>
+          <strong>Data Scadenza:</strong> ${b.dataScadenza}<br/>
+          <strong>Stato:</strong> ${b.pagata ? "✅ Pagata" : "❌ Da pagare"}<br/>
+          <a href="${b.fileUrl}" target="_blank">📎 Scarica PDF</a>
+        </li>
+      `;
+    });
 
     html += "</ul>";
+
     document.getElementById("mainContent").innerHTML = html;
+
   } catch (err) {
     document.getElementById("mainContent").innerHTML =
       `<p style="color:red;">Errore: ${err.message}</p>`;
   }
+}
+
+function applicaFiltri() {
+  const descrizione = document.getElementById("filtroDescrizione").value.toLowerCase();
+  const minImporto = parseFloat(document.getElementById("filtroImportoMin").value);
+  const maxImporto = parseFloat(document.getElementById("filtroImportoMax").value);
+  const dataEm = document.getElementById("filtroDataEmissione").value;
+  const dataSc = document.getElementById("filtroDataScadenza").value;
+  const stato = document.getElementById("filtroStato").value;
+
+  const filtrate = tutteLeBollette.filter(b => {
+    const descrMatch = b.descrizione.toLowerCase().includes(descrizione);
+    const importoMatch = (isNaN(minImporto) || b.importo >= minImporto) &&
+                         (isNaN(maxImporto) || b.importo <= maxImporto);
+    const emMatch = !dataEm || b.dataEmissione >= dataEm;
+    const scMatch = !dataSc || b.dataScadenza <= dataSc;
+    const statoMatch = !stato || (stato === "pagata" && b.pagata) || (stato === "non_pagata" && !b.pagata);
+
+    return descrMatch && importoMatch && emMatch && scMatch && statoMatch;
+  });
+
+  aggiornaLista(filtrate);
+}
+
+function aggiornaLista(bollette) {
+  const ul = document.getElementById("listaBollette");
+  if (!ul) return;
+
+  ul.innerHTML = "";
+
+  if (bollette.length === 0) {
+    ul.innerHTML = "<li>Nessuna bolletta trovata con questi filtri.</li>";
+    return;
+  }
+
+  bollette.forEach(b => {
+    ul.innerHTML += `
+      <li style="background:#fff;padding:1rem;margin-bottom:1rem;border-radius:10px;">
+        <strong>Descrizione:</strong> ${b.descrizione}<br/>
+        <strong>Importo:</strong> €${b.importo.toFixed(2)}<br/>
+        <strong>Data Emissione:</strong> ${b.dataEmissione}<br/>
+        <strong>Data Scadenza:</strong> ${b.dataScadenza}<br/>
+        <strong>Stato:</strong> ${b.pagata ? "✅ Pagata" : "❌ Da pagare"}<br/>
+        <a href="${b.fileUrl}" target="_blank">📎 Scarica PDF</a>
+      </li>
+    `;
+  });
 }
