@@ -206,4 +206,4 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 
 ticket 
 ---------------------------------------------------------------
-1)se clicchi esce la lista delle bollette con i filtri
+1)aggiungi i filtri e fixa l'importo
