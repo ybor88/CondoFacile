@@ -6,101 +6,9 @@
     <title>CondoFacile - Dashboard</title>
 
     <link rel="icon" type="image/png" href="/img/condofacileLogo.png" />
+    <script src="/../js/dashboard.js"></script>
+    </script>
     <link rel="stylesheet" href="/css/style.css" />
-    <style>
-    /* Estensione dello stile esistente */
-
-    .layout {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    .sidebar {
-      width: 240px;
-      background-color: #8b0000;
-      padding: 2rem 1rem;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .sidebar img {
-      width: 80px;
-      margin-bottom: 1rem;
-    }
-
-    .sidebar h2 {
-      color: #fff0f0;
-      margin-bottom: 2rem;
-      font-size: 1.4rem;
-      text-shadow: 0 0 5px #ff4d4d;
-    }
-
-    .sidebar button {
-      background-color: #ff0000;
-      border: none;
-      color: white;
-      width: 100%;
-      margin: 0.4rem 0;
-      padding: 0.8rem 1rem;
-      font-weight: bold;
-      border-radius: 40px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.6);
-      text-transform: uppercase;
-      font-size: 1rem;
-    }
-
-    .sidebar button:hover {
-      background-color: #ff4d4d;
-      transform: scale(1.05);
-    }
-
-    .main {
-      flex: 1;
-      padding: 2rem;
-      background-color: #ffcccc;
-    }
-
-    .main h1 {
-      color: #8b0000;
-      margin-bottom: 1rem;
-    }
-
-    .content-box {
-      background: #fff0f0;
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.3);
-    }
-
-    @media (max-width: 768px) {
-      .layout {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
-        justify-content: space-around;
-      }
-
-      .sidebar button {
-        width: auto;
-        flex: 1;
-        margin: 0.5rem;
-        font-size: 0.9rem;
-        white-space: nowrap;
-      }
-
-      .main {
-        padding: 1rem;
-      }
-    }
-  </style>
 </head>
 <body>
 <div class="layout">
@@ -123,34 +31,5 @@
         </div>
     </div>
 </div>
-
-<script>
-  const userData = JSON.parse(localStorage.getItem("userData"));
-
-  if (!userData || !userData.nome || !userData.email) {
-    alert("Sessione non valida. Effettua nuovamente il login.");
-    window.location.href = "/Condofacile";
-  } else {
-    document.getElementById("welcomeText").textContent =
-      `Ciao ${userData.nome} ${userData.cognome} (${userData.email})`;
-  }
-
-  function logout() {
-    localStorage.removeItem("userData");
-    window.location.href = "/Condofacile";
-  }
-
-  function navigateTo(section) {
-    const content = {
-      bollette: "<h3>📄 Le tue Bollette</h3><p>Consulta e scarica le bollette del tuo appartamento.</p>",
-      avvisi: "<h3>📢 Avvisi</h3><p>Leggi gli avvisi generali e personali del condominio.</p>",
-      chat: "<h3>💬 Chat</h3><p>Comunica con altri condomini o con l'amministratore.</p>",
-      documenti: "<h3>📁 Documenti</h3><p>Scarica i documenti condivisi del condominio.</p>",
-      vetrina: "<h3>🌟 Iniziative</h3><p>Proponi o vota iniziative condominiali.</p>",
-      bilancio: "<h3>📊 Bilancio</h3><p>Consulta il bilancio generale e quello personale mensile.</p>"
-    };
-    document.getElementById("mainContent").innerHTML = content[section] || "<p>Sezione non disponibile.</p>";
-  }
-</script>
 </body>
 </html>

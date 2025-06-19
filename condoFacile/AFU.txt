@@ -168,7 +168,7 @@ INSERT INTO appartamenti (codice, occupato) VALUES
 SHOW TABLES;
 
 CREATE USER 'condo_user'@'localhost' IDENTIFIED BY 'vf87nbsBnk65';
-GRANT ALL PRIVILEGES ON condofacile.* TO 'condo_user'@'localhost';
+GRANT ALL PRIVILEGES ON condofacileDB.* TO 'condo_user'@'localhost';
 FLUSH PRIVILEGES;
 
 USER ROOT
