@@ -52,15 +52,18 @@ async function caricaBollette() {
 
     let html = `<h3>📄 Le tue Bollette</h3><ul style="list-style:none;padding:0;">`;
 
-    bollette.forEach(b => {
-      html += `
-        <li style="background:#fff;padding:1rem;margin-bottom:1rem;border-radius:10px;">
-          <strong>Mese:</strong> ${b.mese} <br/>
-          <strong>Importo:</strong> €${b.importo.toFixed(2)} <br/>
-          <strong>Stato:</strong> ${b.pagata ? "✅ Pagata" : "❌ Da pagare"}
-        </li>
-      `;
-    });
+   bollette.forEach(b => {
+        html += `
+          <li style="background:#fff;padding:1rem;margin-bottom:1rem;border-radius:10px;">
+            <strong>Descrizione:</strong> ${b.descrizione}<br/>
+            <strong>Importo:</strong> €${b.importo.toFixed(2)}<br/>
+            <strong>Data Emissione:</strong> ${b.dataEmissione}<br/>
+            <strong>Data Scadenza:</strong> ${b.dataScadenza}<br/>
+            <strong>Stato:</strong> ${b.pagata ? "✅ Pagata" : "❌ Da pagare"}<br/>
+            <a href="${b.fileUrl}" target="_blank">📎 Scarica PDF</a>
+          </li>
+        `;
+      });
 
     html += "</ul>";
     document.getElementById("mainContent").innerHTML = html;
