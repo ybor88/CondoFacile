@@ -21,7 +21,7 @@ public class Bolletta {
     @Column(name = "descrizione", nullable = false)
     private String descrizione;
 
-    @Column(name = "imports", nullable = false)
+    @Column(name = "importo", nullable = false)
     private BigDecimal importo;
 
     @Column(name = "data_emissione", nullable = false)
