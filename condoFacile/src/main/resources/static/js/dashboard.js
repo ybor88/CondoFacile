@@ -72,6 +72,7 @@ async function caricaBollette() {
           <option value="non_pagata">❌ Da pagare</option>
         </select>
         <button onclick="applicaFiltri()">Applica Filtri</button>
+        <button onclick="resetFiltri()">Reset Filtri</button>
       </div>
 
       <ul id="listaBollette" style="list-style:none;padding:0;">
@@ -98,6 +99,17 @@ async function caricaBollette() {
     document.getElementById("mainContent").innerHTML =
       `<p style="color:red;">Errore: ${err.message}</p>`;
   }
+}
+
+function resetFiltri() {
+  document.getElementById("filtroDescrizione").value = "";
+  document.getElementById("filtroImportoMin").value = "";
+  document.getElementById("filtroImportoMax").value = "";
+  document.getElementById("filtroDataEmissione").value = "";
+  document.getElementById("filtroDataScadenza").value = "";
+  document.getElementById("filtroStato").value = "";
+
+  aggiornaLista(tutteLeBollette);
 }
 
 function applicaFiltri() {
