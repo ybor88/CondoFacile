@@ -1,17 +1,33 @@
 package com.condofacile.service.impl;
 
 import com.condofacile.dto.BollettaDTO;
+import com.condofacile.dto.BollettaPdfRequestDTO;
 import com.condofacile.entity.Bolletta;
 import com.condofacile.entity.Utente;
 import com.condofacile.error.BollettaNotFoundException;
+import com.condofacile.error.BollettaPdfNotCreatedException;
 import com.condofacile.repository.BollettaRepository;
 import com.condofacile.repository.UtenteRepository;
 import com.condofacile.service.BollettaService;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.time.format.DateTimeFormatter;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +38,12 @@ public class BollettaServiceImpl implements BollettaService {
 
     @Override
     public List<BollettaDTO> getAllBollette() {
-        return bollettaRepository.findAll().stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        List<BollettaDTO> list = new ArrayList<>();
+        for (Bolletta bolletta : bollettaRepository.findAll()) {
+            BollettaDTO dto = toDTO(bolletta);
+            list.add(dto);
+        }
+        return list;
     }
 
     @Override
@@ -73,5 +92,78 @@ public class BollettaServiceImpl implements BollettaService {
                 .pagata(b.getPagata())
                 .fileUrl(b.getFileUrl())
                 .build();
+    }
+
+    public byte[] generateBollettaPdf(BollettaPdfRequestDTO dto) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdfDoc = new PdfDocument(writer);
+            Document document = new Document(pdfDoc);
+
+            // Recupera utente dalla email
+            Utente utente = utenteRepository.findByEmail(dto.getEmail())
+                    .orElseThrow(() -> new RuntimeException("Utente non trovato per email: " + dto.getEmail()));
+
+            // Logo da classpath
+            InputStream imageStream = getClass().getResourceAsStream("/static/img/logoVoltarisEnergy.png");
+            if (imageStream != null) {
+                byte[] imageBytes = imageStream.readAllBytes();
+                ImageData imageData = ImageDataFactory.create(imageBytes);
+                Image logo = new Image(imageData);
+                logo.setWidth(150);
+                document.add(logo);
+            } else {
+                document.add(new Paragraph("⚠ Logo mancante").setFontColor(com.itextpdf.kernel.colors.ColorConstants.RED));
+            }
+
+            // Intestatario bolletta
+            document.add(new Paragraph("Intestatario: " + utente.getNome() + " " + utente.getCognome() +
+                    " (ID Utente: " + utente.getId() + ")")
+                    .setFontSize(12)
+                    .setBold()
+                    .setMarginBottom(10));
+
+            // Titolo
+            document.add(new Paragraph("Bolletta Elettrica")
+                    .setFontSize(20)
+                    .setBold()
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setMarginBottom(20));
+
+            // Tabella con dati bolletta
+            Table table = new Table(UnitValue.createPercentArray(new float[]{30, 70}))
+                    .setWidth(UnitValue.createPercentValue(100));
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            table.addCell(new Cell().add(new Paragraph("Descrizione").setBold()));
+            table.addCell(new Cell().add(new Paragraph(dto.getDescrizione())));
+
+            table.addCell(new Cell().add(new Paragraph("Importo").setBold()));
+            table.addCell(new Cell().add(new Paragraph("€ " + String.format("%.2f", dto.getImporto()))));
+
+            table.addCell(new Cell().add(new Paragraph("Data Emissione").setBold()));
+            table.addCell(new Cell().add(new Paragraph(dto.getDataEmissione().format(formatter))));
+
+            table.addCell(new Cell().add(new Paragraph("Data Scadenza").setBold()));
+            table.addCell(new Cell().add(new Paragraph(dto.getDataScadenza().format(formatter))));
+
+            table.addCell(new Cell().add(new Paragraph("Stato").setBold()));
+            table.addCell(new Cell().add(new Paragraph(dto.getPagata() != null && dto.getPagata() ? "✅ Pagata" : "❌ Non pagata")));
+
+            document.add(table);
+
+            // Emittente
+            document.add(new Paragraph("\nEmittente: Voltaris Energy S.p.A.")
+                    .setTextAlignment(TextAlignment.RIGHT)
+                    .setItalic()
+                    .setFontSize(10));
+
+            document.close();
+            return out.toByteArray();
+
+        } catch (Exception e) {
+            throw new BollettaPdfNotCreatedException("Errore durante la generazione del PDF della bolletta: " + e.getMessage());
+        }
     }
 }

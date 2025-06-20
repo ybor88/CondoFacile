@@ -206,4 +206,5 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 
 ticket 
 ---------------------------------------------------------------
-1)un pulsante per azzerrare tutti i filtri
+1)bind scarico al fe e visualizzazione
+

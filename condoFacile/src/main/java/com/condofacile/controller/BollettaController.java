@@ -1,6 +1,7 @@
 package com.condofacile.controller;
 
 import com.condofacile.dto.BollettaDTO;
+import com.condofacile.dto.BollettaPdfRequestDTO;
 import com.condofacile.service.BollettaService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -67,5 +68,18 @@ public class BollettaController {
         response.put("data", null);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/pdf")
+    public ResponseEntity<byte[]> generaPdf(@RequestBody @Valid BollettaPdfRequestDTO dto) {
+        log.info("Richiesta generazione PDF per bolletta");
+
+        byte[] pdfBytes = service.generateBollettaPdf(dto);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.builder("inline").filename("bolletta.pdf").build());
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 }
