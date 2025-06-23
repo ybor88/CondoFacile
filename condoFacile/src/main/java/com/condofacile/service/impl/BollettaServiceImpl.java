@@ -101,8 +101,8 @@ public class BollettaServiceImpl implements BollettaService {
             Document document = new Document(pdfDoc);
 
             // Recupera utente dalla email
-            Utente utente = utenteRepository.findByEmail(dto.getEmail())
-                    .orElseThrow(() -> new RuntimeException("Utente non trovato per email: " + dto.getEmail()));
+            Utente utente = utenteRepository.findById(Integer.valueOf(dto.getUtenteId()))
+                    .orElseThrow(() -> new RuntimeException("Utente non trovato per email: " + dto.getUtenteId()));
 
             // Logo da classpath
             InputStream imageStream = getClass().getResourceAsStream("/static/img/logoVoltarisEnergy.png");

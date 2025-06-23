@@ -39,7 +39,7 @@ async function navigateTo(section) {
 async function caricaBollette() {
   try {
     const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
-    const res = await fetch("http://localhost:9090/condofacile/api/bollette", {
+    const res = await fetch("/condofacile/api/bollette", {
       method: "GET",
       headers: {
         Authorization: TOKEN,
@@ -86,7 +86,7 @@ async function caricaBollette() {
           <strong>Data Emissione:</strong> ${b.dataEmissione}<br/>
           <strong>Data Scadenza:</strong> ${b.dataScadenza}<br/>
           <strong>Stato:</strong> ${b.pagata ? "✅ Pagata" : "❌ Da pagare"}<br/>
-          <a href="${b.fileUrl}" target="_blank">📎 Scarica PDF</a>
+           <button onclick='scaricaPdf(${JSON.stringify(b)})'>📎 Scarica PDF</button>
         </li>
       `;
     });
@@ -157,4 +157,44 @@ function aggiornaLista(bollette) {
       </li>
     `;
   });
+}
+
+async function scaricaPdf(bolletta) {
+  const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
+
+  try {
+    const response = await fetch("/condofacile/api/bollette/pdf", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": TOKEN
+      },
+      body: JSON.stringify(bolletta)
+    });
+
+    if (!response.ok) {
+      throw new Error("Errore nella generazione del PDF");
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+
+    // Costruisci un nome file custom basato su descrizione + dataEmissione (o email, o altro)
+    // Sostituisci spazi e caratteri non validi nel filename
+    const safeDescrizione = (bolletta.descrizione || "bolletta")
+      .replace(/\s+/g, "_")
+      .replace(/[^\w\-]/g, "");
+    const dataEmissione = bolletta.dataEmissione ? bolletta.dataEmissione : "";
+    const fileName = `${safeDescrizione}_${dataEmissione}.pdf`;
+
+    a.download = fileName;
+    a.target = "_blank";
+    a.click();
+    URL.revokeObjectURL(url);
+
+  } catch (error) {
+    alert("Errore nel download del PDF: " + error.message);
+  }
 }

@@ -18,5 +18,5 @@ public class BollettaPdfRequestDTO {
     private LocalDate dataEmissione;
     private LocalDate dataScadenza;
     private Boolean pagata;
-    private String email; // usata solo in fase di creazione
+    private String utenteId; // usata solo in fase di creazione
 }
