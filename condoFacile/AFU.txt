@@ -206,6 +206,4 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 
 ticket 
 ---------------------------------------------------------------
-1)bind scarico al fe e visualizzazione
-(bug, nella get bollette si deve mappare l'email dell'utente)
-
+avvisi generali e personali

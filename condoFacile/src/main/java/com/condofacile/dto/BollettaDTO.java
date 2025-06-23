@@ -17,5 +17,4 @@ public class BollettaDTO {
     private LocalDate dataEmissione;
     private LocalDate dataScadenza;
     private Boolean pagata;
-    private String fileUrl;
 }

@@ -64,7 +64,6 @@ public class BollettaServiceImpl implements BollettaService {
         builder.dataEmissione(dto.getDataEmissione());
         builder.dataScadenza(dto.getDataScadenza());
         builder.pagata(dto.getPagata() != null && dto.getPagata());
-        builder.fileUrl(dto.getFileUrl());
         builder.utente(utente);
         Bolletta bolletta = builder
                 .build();
@@ -90,7 +89,6 @@ public class BollettaServiceImpl implements BollettaService {
                 .dataEmissione(b.getDataEmissione())
                 .dataScadenza(b.getDataScadenza())
                 .pagata(b.getPagata())
-                .fileUrl(b.getFileUrl())
                 .build();
     }
 

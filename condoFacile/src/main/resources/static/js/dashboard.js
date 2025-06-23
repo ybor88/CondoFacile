@@ -153,7 +153,7 @@ function aggiornaLista(bollette) {
         <strong>Data Emissione:</strong> ${b.dataEmissione}<br/>
         <strong>Data Scadenza:</strong> ${b.dataScadenza}<br/>
         <strong>Stato:</strong> ${b.pagata ? "✅ Pagata" : "❌ Da pagare"}<br/>
-        <a href="${b.fileUrl}" target="_blank">📎 Scarica PDF</a>
+         <button onclick='scaricaPdf(${JSON.stringify(b)})'>📎 Scarica PDF</button>
       </li>
     `;
   });

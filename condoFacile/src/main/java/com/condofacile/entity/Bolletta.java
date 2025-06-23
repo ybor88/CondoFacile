@@ -33,9 +33,6 @@ public class Bolletta {
     @Column(name = "pagata")
     private Boolean pagata = false;
 
-    @Column(name = "file_url")
-    private String fileUrl;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "utente_id", nullable = false)
     private Utente utente;
