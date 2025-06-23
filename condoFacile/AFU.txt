@@ -1,4 +1,4 @@
-Applicazione per condominio. Un condomino accede alla sua area personale, consulta bollette , avvisi generali e personali
+Applicazione per condominio. Un condomino accede alla sua area personale, consulta bollette , avvisi generali
 gestione chat con altri condomini e amministratore. Scarica le bollette e documenti generali. Propone sulla vetrina delle
 iniziative che se vengono flaggate con il massimo dei si vengono approvate e l'amministratore manda email a tutti con il 
 documento di approvazione con tanto di firma di tutti. Altrimenti abolite con le motivazioni con solo la firma dell'amministratorestratore
@@ -206,7 +206,8 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 
 ticket 
 ---------------------------------------------------------------
-avvisi generali e personali
+avvisi generali
+bind avvisi on fe service
 1)crea avviso
 2)mostra avvisi (per ultima data di pubblicazione)
 3)filtri ricerca avviso
