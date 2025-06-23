@@ -207,3 +207,6 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 ticket 
 ---------------------------------------------------------------
 avvisi generali e personali
+1)crea avviso
+2)mostra avvisi (per ultima data di pubblicazione)
+3)filtri ricerca avviso
