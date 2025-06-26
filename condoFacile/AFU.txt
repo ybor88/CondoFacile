@@ -207,7 +207,4 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 ticket 
 ---------------------------------------------------------------
 avvisi generali
-1)bug mostra gli avvisi
-2)rimuovere i personali
-3)filtrare per quelli propri
-4)filtrare il titolo
+1)AGGIUNGI AVVISO

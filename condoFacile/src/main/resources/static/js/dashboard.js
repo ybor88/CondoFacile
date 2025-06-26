@@ -205,11 +205,10 @@ async function caricaAvvisi() {
     <h3>📢 Avvisi del Condominio</h3>
 
     <div style="background:#f0f0f0;padding:1rem;border-radius:10px;margin-bottom:1rem;">
-      <h4>➕ Aggiungi Avviso</h4>
+      <input type="text" id="filtroTitoloAvvisi" placeholder="Filtra per titolo..." style="margin-right:0.5rem;" oninput="filtraAvvisi()" />
       <input type="text" id="titoloAvviso" placeholder="Titolo" style="margin-right:0.5rem;" />
       <input type="text" id="messaggioAvviso" placeholder="Messaggio" style="margin-right:0.5rem;" />
-      <label><input type="checkbox" id="soloPersonaleAvviso" /> Solo personale</label>
-      <button onclick="aggiungiAvviso()">Aggiungi</button>
+      <button onclick="aggiungiAvviso()">Aggiungi Avviso</button>
     </div>
 
     <table style="width:100%;border-collapse:collapse;">
@@ -218,7 +217,6 @@ async function caricaAvvisi() {
           <th style="padding:0.5rem;border:1px solid #ccc;">Titolo</th>
           <th style="padding:0.5rem;border:1px solid #ccc;">Messaggio</th>
           <th style="padding:0.5rem;border:1px solid #ccc;">Data Pubblicazione</th>
-          <th style="padding:0.5rem;border:1px solid #ccc;">Solo personale</th>
         </tr>
       </thead>
       <tbody id="tabellaAvvisi"></tbody>
@@ -229,8 +227,9 @@ async function caricaAvvisi() {
 
   try {
     const res = await fetch("/condofacile/api/avvisi", {
+      method: "GET",
       headers: {
-        "Authorization": `Bearer ${TOKEN}`,
+        "Authorization": TOKEN,
         "Content-Type": "application/json"
       }
     });
@@ -239,20 +238,46 @@ async function caricaAvvisi() {
 
     const json = await res.json();
     tuttiGliAvvisi = json.data || [];
-    aggiornaTabellaAvvisi();
+    aggiornaTabellaAvvisi(tuttiGliAvvisi);
   } catch (error) {
     document.getElementById("tabellaAvvisi").innerHTML = `
-      <tr><td colspan="4" style="color:red;">Errore: ${error.message}</td></tr>
+      <tr><td colspan="3" style="color:red;">Errore: ${error.message}</td></tr>
     `;
   }
+}
+
+function aggiornaTabellaAvvisi(avvisi) {
+  const tbody = document.getElementById("tabellaAvvisi");
+  tbody.innerHTML = "";
+
+  if (!avvisi.length) {
+    tbody.innerHTML = `
+      <tr><td colspan="3" style="text-align:center;padding:1rem;">Nessun avviso disponibile.</td></tr>
+    `;
+    return;
+  }
+
+  avvisi.forEach(avv => {
+    const data = avv.dataPubblicazione ? new Date(avv.dataPubblicazione).toLocaleString() : "-";
+    tbody.innerHTML += `
+      <tr>
+        <td style="padding:0.5rem;border:1px solid #ccc;">${avv.titolo}</td>
+        <td style="padding:0.5rem;border:1px solid #ccc;">${avv.messaggio}</td>
+        <td style="padding:0.5rem;border:1px solid #ccc;">${data}</td>
+      </tr>
+    `;
+  });
+}
+
+function filtraAvvisi() {
+  const filtro = document.getElementById("filtroTitoloAvvisi").value.toLowerCase();
+  const filtrati = tuttiGliAvvisi.filter(avv => avv.titolo.toLowerCase().includes(filtro));
+  aggiornaTabellaAvvisi(filtrati);
 }
 
 async function aggiungiAvviso() {
   const titolo = document.getElementById("titoloAvviso").value.trim();
   const messaggio = document.getElementById("messaggioAvviso").value.trim();
-  const soloPersonale = document.getElementById("soloPersonaleAvviso").checked;
-
-  const userData = JSON.parse(localStorage.getItem("userData"));
   const TOKEN = localStorage.getItem("jwt");
 
   if (!titolo || !messaggio) {
@@ -263,15 +288,15 @@ async function aggiungiAvviso() {
   const nuovoAvviso = {
     titolo,
     messaggio,
-    soloPersonale,
-    destinatarioId: soloPersonale ? userData.id : null
+    soloPersonale: false,
+    destinatarioId: null
   };
 
   try {
     const res = await fetch("/condofacile/api/avvisi", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${TOKEN}`,
+        "Authorization": TOKEN,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(nuovoAvviso)
@@ -284,28 +309,4 @@ async function aggiungiAvviso() {
   } catch (err) {
     alert("Errore: " + err.message);
   }
-}
-
-function aggiornaTabellaAvvisi() {
-  const tbody = document.getElementById("tabellaAvvisi");
-  tbody.innerHTML = "";
-
-  if (!tuttiGliAvvisi.length) {
-    tbody.innerHTML = `
-      <tr><td colspan="4" style="text-align:center;padding:1rem;">Nessun avviso disponibile.</td></tr>
-    `;
-    return;
-  }
-
-  tuttiGliAvvisi.forEach(avv => {
-    const data = avv.dataPubblicazione ? new Date(avv.dataPubblicazione).toLocaleString() : "-";
-    tbody.innerHTML += `
-      <tr>
-        <td style="padding:0.5rem;border:1px solid #ccc;">${avv.titolo}</td>
-        <td style="padding:0.5rem;border:1px solid #ccc;">${avv.messaggio}</td>
-        <td style="padding:0.5rem;border:1px solid #ccc;">${data}</td>
-        <td style="padding:0.5rem;border:1px solid #ccc;">${avv.soloPersonale ? "✅" : "—"}</td>
-      </tr>
-    `;
-  });
 }
