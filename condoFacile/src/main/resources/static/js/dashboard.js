@@ -1,6 +1,5 @@
-// dashboard.js
-
 let tutteLeBollette = [];
+let tuttiGliAvvisi = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   const userData = JSON.parse(localStorage.getItem("userData"));
@@ -25,8 +24,12 @@ async function navigateTo(section) {
     return;
   }
 
+  if (section === "avvisi") {
+    await caricaAvvisi();
+    return;
+  }
+
   const content = {
-    avvisi: "<h3>📢 Avvisi</h3><p>Leggi gli avvisi generali e personali del condominio.</p>",
     chat: "<h3>💬 Chat</h3><p>Comunica con altri condomini o con l'amministratore.</p>",
     documenti: "<h3>📁 Documenti</h3><p>Scarica i documenti condivisi del condominio.</p>",
     vetrina: "<h3>🌟 Iniziative</h3><p>Proponi o vota iniziative condominiali.</p>",
@@ -58,7 +61,6 @@ async function caricaBollette() {
 
     let html = `
       <h3>📄 Le tue Bollette</h3>
-
       <div id="filtri" style="margin-bottom:1rem;background:#f0f0f0;padding:1rem;border-radius:10px;">
         <h4>🔍 Filtra Bollette</h4>
         <input type="text" id="filtroDescrizione" placeholder="Descrizione" />
@@ -86,13 +88,12 @@ async function caricaBollette() {
           <strong>Data Emissione:</strong> ${b.dataEmissione}<br/>
           <strong>Data Scadenza:</strong> ${b.dataScadenza}<br/>
           <strong>Stato:</strong> ${b.pagata ? "✅ Pagata" : "❌ Da pagare"}<br/>
-           <button onclick='scaricaPdf(${JSON.stringify(b)})'>📎 Scarica PDF</button>
+          <button onclick='scaricaPdf(${JSON.stringify(b)})'>📎 Scarica PDF</button>
         </li>
       `;
     });
 
     html += "</ul>";
-
     document.getElementById("mainContent").innerHTML = html;
 
   } catch (err) {
@@ -153,7 +154,7 @@ function aggiornaLista(bollette) {
         <strong>Data Emissione:</strong> ${b.dataEmissione}<br/>
         <strong>Data Scadenza:</strong> ${b.dataScadenza}<br/>
         <strong>Stato:</strong> ${b.pagata ? "✅ Pagata" : "❌ Da pagare"}<br/>
-         <button onclick='scaricaPdf(${JSON.stringify(b)})'>📎 Scarica PDF</button>
+        <button onclick='scaricaPdf(${JSON.stringify(b)})'>📎 Scarica PDF</button>
       </li>
     `;
   });
@@ -179,16 +180,14 @@ async function scaricaPdf(bolletta) {
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url;
 
-    // Costruisci un nome file custom basato su descrizione + dataEmissione (o email, o altro)
-    // Sostituisci spazi e caratteri non validi nel filename
     const safeDescrizione = (bolletta.descrizione || "bolletta")
       .replace(/\s+/g, "_")
       .replace(/[^\w\-]/g, "");
     const dataEmissione = bolletta.dataEmissione ? bolletta.dataEmissione : "";
     const fileName = `${safeDescrizione}_${dataEmissione}.pdf`;
 
+    a.href = url;
     a.download = fileName;
     a.target = "_blank";
     a.click();
@@ -197,4 +196,116 @@ async function scaricaPdf(bolletta) {
   } catch (error) {
     alert("Errore nel download del PDF: " + error.message);
   }
+}
+
+async function caricaAvvisi() {
+  const TOKEN = "Bearer eyJzdGF0aWMiOiAiY29uZG9mYWNpbGVfYXBwIiwgInJvbGUiOiAiYWRtaW4iLCAiZXhwaXJlcyI6ICIyMDI3LTEyLTMxIn0=";
+
+  const content = `
+    <h3>📢 Avvisi del Condominio</h3>
+
+    <div style="background:#f0f0f0;padding:1rem;border-radius:10px;margin-bottom:1rem;">
+      <h4>➕ Aggiungi Avviso</h4>
+      <input type="text" id="titoloAvviso" placeholder="Titolo" style="margin-right:0.5rem;" />
+      <input type="text" id="messaggioAvviso" placeholder="Messaggio" style="margin-right:0.5rem;" />
+      <label><input type="checkbox" id="soloPersonaleAvviso" /> Solo personale</label>
+      <button onclick="aggiungiAvviso()">Aggiungi</button>
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr style="background:#ddd;">
+          <th style="padding:0.5rem;border:1px solid #ccc;">Titolo</th>
+          <th style="padding:0.5rem;border:1px solid #ccc;">Messaggio</th>
+          <th style="padding:0.5rem;border:1px solid #ccc;">Data Pubblicazione</th>
+          <th style="padding:0.5rem;border:1px solid #ccc;">Solo personale</th>
+        </tr>
+      </thead>
+      <tbody id="tabellaAvvisi"></tbody>
+    </table>
+  `;
+
+  document.getElementById("mainContent").innerHTML = content;
+
+  try {
+    const res = await fetch("/condofacile/api/avvisi", {
+      headers: {
+        "Authorization": `Bearer ${TOKEN}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!res.ok) throw new Error("Errore nel recupero degli avvisi");
+
+    const json = await res.json();
+    tuttiGliAvvisi = json.data || [];
+    aggiornaTabellaAvvisi();
+  } catch (error) {
+    document.getElementById("tabellaAvvisi").innerHTML = `
+      <tr><td colspan="4" style="color:red;">Errore: ${error.message}</td></tr>
+    `;
+  }
+}
+
+async function aggiungiAvviso() {
+  const titolo = document.getElementById("titoloAvviso").value.trim();
+  const messaggio = document.getElementById("messaggioAvviso").value.trim();
+  const soloPersonale = document.getElementById("soloPersonaleAvviso").checked;
+
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const TOKEN = localStorage.getItem("jwt");
+
+  if (!titolo || !messaggio) {
+    alert("Compila sia il titolo che il messaggio.");
+    return;
+  }
+
+  const nuovoAvviso = {
+    titolo,
+    messaggio,
+    soloPersonale,
+    destinatarioId: soloPersonale ? userData.id : null
+  };
+
+  try {
+    const res = await fetch("/condofacile/api/avvisi", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(nuovoAvviso)
+    });
+
+    if (!res.ok) throw new Error("Errore nella creazione dell'avviso");
+
+    alert("Avviso creato con successo!");
+    await caricaAvvisi();
+  } catch (err) {
+    alert("Errore: " + err.message);
+  }
+}
+
+function aggiornaTabellaAvvisi() {
+  const tbody = document.getElementById("tabellaAvvisi");
+  tbody.innerHTML = "";
+
+  if (!tuttiGliAvvisi.length) {
+    tbody.innerHTML = `
+      <tr><td colspan="4" style="text-align:center;padding:1rem;">Nessun avviso disponibile.</td></tr>
+    `;
+    return;
+  }
+
+  tuttiGliAvvisi.forEach(avv => {
+    const data = avv.dataPubblicazione ? new Date(avv.dataPubblicazione).toLocaleString() : "-";
+    tbody.innerHTML += `
+      <tr>
+        <td style="padding:0.5rem;border:1px solid #ccc;">${avv.titolo}</td>
+        <td style="padding:0.5rem;border:1px solid #ccc;">${avv.messaggio}</td>
+        <td style="padding:0.5rem;border:1px solid #ccc;">${data}</td>
+        <td style="padding:0.5rem;border:1px solid #ccc;">${avv.soloPersonale ? "✅" : "—"}</td>
+      </tr>
+    `;
+  });
 }

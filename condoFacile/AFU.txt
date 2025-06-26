@@ -207,7 +207,7 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 ticket 
 ---------------------------------------------------------------
 avvisi generali
-bind avvisi on fe service
-1)crea avviso
-2)mostra avvisi (per ultima data di pubblicazione)
-3)filtri ricerca avviso
+1)bug mostra gli avvisi
+2)rimuovere i personali
+3)filtrare per quelli propri
+4)filtrare il titolo
