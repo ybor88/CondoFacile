@@ -56,7 +56,6 @@ CREATE TABLE avvisi (
     titolo VARCHAR(255) NOT NULL,
     messaggio TEXT NOT NULL,
     data_pubblicazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    solo_personale BOOLEAN DEFAULT FALSE,
     destinatario_id INT,
     FOREIGN KEY (destinatario_id) REFERENCES utenti(id) ON DELETE CASCADE
 );
@@ -207,4 +206,5 @@ spring.mail.password=hitvaavtvbcpclno (application properties)
 ticket 
 ---------------------------------------------------------------
 avvisi generali
-1)AGGIUNGI AVVISO
+1)AGGIUNGI AVVISO, come destinatario deve uscire la lista degli utenti a tendina e scendere nel servizio,
+recuperando l'id.

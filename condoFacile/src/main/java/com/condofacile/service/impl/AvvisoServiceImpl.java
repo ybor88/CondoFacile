@@ -50,7 +50,6 @@ public class AvvisoServiceImpl implements AvvisoService {
         Avviso avviso = new Avviso();
         avviso.setTitolo(dto.getTitolo());
         avviso.setMessaggio(dto.getMessaggio());
-        avviso.setSoloPersonale(dto.getSoloPersonale());
         avviso.setDataPubblicazione(dto.getDataPubblicazione());
         avviso.setDestinatario(destinatario);
 
@@ -65,7 +64,6 @@ public class AvvisoServiceImpl implements AvvisoService {
 
         avviso.setTitolo(dto.getTitolo());
         avviso.setMessaggio(dto.getMessaggio());
-        avviso.setSoloPersonale(dto.getSoloPersonale());
         avviso.setDataPubblicazione(dto.getDataPubblicazione());
 
         if (dto.getDestinatarioId() != null) {
@@ -95,7 +93,6 @@ public class AvvisoServiceImpl implements AvvisoService {
         dto.setTitolo(avviso.getTitolo());
         dto.setMessaggio(avviso.getMessaggio());
         dto.setDataPubblicazione(avviso.getDataPubblicazione());
-        dto.setSoloPersonale(avviso.getSoloPersonale());
         if (avviso.getDestinatario() != null) {
             dto.setDestinatarioId(avviso.getDestinatario().getId());
         }

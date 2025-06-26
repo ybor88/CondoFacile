@@ -30,9 +30,6 @@ public class Avviso {
     @Column(name = "data_pubblicazione", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime dataPubblicazione;
 
-    @Column(name = "solo_personale")
-    private Boolean soloPersonale = false;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "destinatario_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
